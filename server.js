@@ -6,6 +6,9 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// DWIM TV — Destiny Word International Ministries
+console.log('⏳ DWIM TV (Destiny Word International Ministries) starting…');
+
 // Serve frontend
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -216,6 +219,27 @@ app.delete('/api/admin/videos/:id', requireAdmin, async (req, res) => {
   res.json({ ok: true, removed, github: gh });
 });
 
+/* ---- Live stream: set/clear the YouTube live URL for services ---- */
+app.post('/api/admin/live', requireAdmin, async (req, res) => {
+  const url = String((req.body || {}).url || '').trim();
+  const cat = readCatalog();
+  if (!url) {
+    cat.live = { title: 'DWIM TV Live — Sunday Service', type: 'youtube', source: '' };
+  } else {
+    const m = url.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([\w-]{11})/);
+    const id = /^[\w-]{11}$/.test(url) ? url : (m ? m[1] : null);
+    if (!id) return res.status(400).json({ ok: false, error: 'Please paste a valid YouTube live URL or 11-character ID' });
+    cat.live = {
+      title: String((req.body || {}).title || 'DWIM TV Live — Sunday Service'),
+      type: 'youtube',
+      source: 'https://www.youtube.com/watch?v=' + id
+    };
+  }
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, live: cat.live, github: gh });
+});
+
 /* ---- GitHub sync: commits data/videos.json so changes survive
         Render free-tier restarts (Render auto-redeploys from repo) ---- */
 async function syncCatalogToGitHub() {
@@ -261,5 +285,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`📺 DWIM TV is live on port ${PORT}`);
+  console.log(`✝️ DWIM TV — Destiny Word International Ministries is live on port ${PORT}`);
+  console.log('   Raising a people of destiny through the Word.');
 });

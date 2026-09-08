@@ -1,381 +1,84 @@
 {
+  "church": {
+    "name": "Destiny Word International Ministries",
+    "short": "DWIM",
+    "tagline": "Raising a people of destiny through the Word",
+    "theme": "The Year of Divine Remembrance",
+    "themeNote": "Dismantling Strongholds",
+    "themeVerse": "“For the weapons of our warfare are not carnal but mighty through God for the pulling down of strongholds.” — 2 Corinthians 10:4",
+    "location": "Old Ascot, Gweru, Zimbabwe",
+    "mapUrl": "https://maps.google.com/?q=Old+Ascot,+Gweru,+Zimbabwe",
+    "services": [
+      {
+        "name": "Sunday Service",
+        "time": "Sundays · 11:00 AM (CAT)"
+      },
+      {
+        "name": "Prayer Line",
+        "time": "Distance is not a barrier — pray with us any time, from anywhere"
+      }
+    ],
+    "contact": {
+      "facebook": "https://www.facebook.com/profile.php?id=pfbid0y2cf8Es7Z6AkwrFTibvzLrFuynKevZpfAQzVCefL6ZquqP5mqg17bwt93fdWhYYpl",
+      "whatsapp": "",
+      "phone": "",
+      "email": ""
+    },
+    "giving": {
+      "bankName": "",
+      "accountName": "",
+      "accountNumber": "",
+      "note": "To sow your seed, give your tithes & offerings, or become a DWIM Partner, please contact the church office or message us on Facebook. Every seed sown in faith reaches a soul — thank you for partnering with Destiny Word International Ministries."
+    }
+  },
+  "live": {
+    "title": "DWIM TV Live — Sunday Service",
+    "type": "youtube",
+    "source": ""
+  },
   "channels": [
     {
       "id": "ch-all",
       "name": "All Videos",
-      "icon": "🌐"
+      "icon": "📺"
     },
     {
-      "id": "ch-movies",
-      "name": "Movies",
-      "icon": "🎬"
-    },
-    {
-      "id": "ch-cartoons",
-      "name": "Cartoons",
-      "icon": "🧸"
-    },
-    {
-      "id": "ch-church",
-      "name": "Church",
+      "id": "ch-services",
+      "name": "Sunday Services",
       "icon": "⛪"
     },
     {
+      "id": "ch-sermons",
+      "name": "Sermons & Messages",
+      "icon": "📖"
+    },
+    {
+      "id": "ch-prayer",
+      "name": "Prayer & Deliverance",
+      "icon": "🙏"
+    },
+    {
       "id": "ch-songs",
-      "name": "Songs",
-      "icon": "👏"
-    },
-    {
-      "id": "ch-docs",
-      "name": "Documentaries",
-      "icon": "📚"
-    },
-    {
-      "id": "ch-music",
-      "name": "Music",
+      "name": "Worship & Songs",
       "icon": "🎵"
     },
     {
-      "id": "ch-tech",
-      "name": "Tech",
-      "icon": "💻"
+      "id": "ch-archive",
+      "name": "Ministry Archive",
+      "icon": "🎞️"
+    },
+    {
+      "id": "ch-classics",
+      "name": "Classic Messages",
+      "icon": "🕊"
     }
   ],
   "videos": [
     {
-      "id": "v1",
-      "title": "Big Buck Bunny",
-      "channel": "ch-movies",
-      "category": "Movies",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-      "duration": "9:56",
-      "thumb": "https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
-      "desc": "A giant rabbit with a heart of gold gets revenge on three bullying rodents in this classic Blender open movie.",
-      "tags": [
-        "animation",
-        "comedy",
-        "blender"
-      ]
-    },
-    {
-      "id": "v2",
-      "title": "Sintel",
-      "channel": "ch-movies",
-      "category": "Movies",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=puLAJaabJh0",
-      "duration": "14:48",
-      "thumb": "https://i.ytimg.com/vi/puLAJaabJh0/hqdefault.jpg",
-      "desc": "A girl searches for the dragon she once befriended, on an epic journey through mountains and deserts.",
-      "tags": [
-        "animation",
-        "fantasy",
-        "blender"
-      ]
-    },
-    {
-      "id": "v3",
-      "title": "Tears of Steel",
-      "channel": "ch-movies",
-      "category": "Movies",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=41hv2tW5Lc4",
-      "duration": "12:14",
-      "thumb": "https://i.ytimg.com/vi/41hv2tW5Lc4/hqdefault.jpg",
-      "desc": "In a future Amsterdam, a group of warriors and scientists must recreate the past to save humanity from robots.",
-      "tags": [
-        "animation",
-        "vfx",
-        "sci-fi",
-        "blender"
-      ]
-    },
-    {
-      "id": "v4",
-      "title": "Elephants Dream",
-      "channel": "ch-cartoons",
-      "category": "Cartoons",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=TLkA0RELQ1g",
-      "duration": "10:53",
-      "thumb": "https://i.ytimg.com/vi/TLkA0RELQ1g/hqdefault.jpg",
-      "desc": "The world's first open movie, from 2006: two characters explore a strange and seemingly endless machine.",
-      "tags": [
-        "animation",
-        "surreal",
-        "blender"
-      ]
-    },
-    {
-      "id": "v5",
-      "title": "Cosmos Laundromat",
-      "channel": "ch-cartoons",
-      "category": "Cartoons",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=fZDPckGn8Jk",
-      "duration": "12:10",
-      "thumb": "https://i.ytimg.com/vi/fZDPckGn8Jk/hqdefault.jpg",
-      "desc": "A depressed sheep named Franck meets a salesman who offers him an adventure he will never forget.",
-      "tags": [
-        "animation",
-        "comedy",
-        "blender"
-      ]
-    },
-    {
-      "id": "v6",
-      "title": "Agent 327: Operation Barbershop",
-      "channel": "ch-cartoons",
-      "category": "Cartoons",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=mN0zPOpADL4",
-      "duration": "3:51",
-      "thumb": "https://i.ytimg.com/vi/mN0zPOpADL4/hqdefault.jpg",
-      "desc": "A Dutch secret agent investigates a suspicious barbershop, but he is being tailed by mercenary Boris Kloris.",
-      "tags": [
-        "animation",
-        "action",
-        "comedy",
-        "blender"
-      ]
-    },
-    {
-      "id": "v7",
-      "title": "Spring - Blender Open Movie",
-      "channel": "ch-cartoons",
-      "category": "Cartoons",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=WhWc3b3KhnY",
-      "duration": "7:43",
-      "thumb": "https://i.ytimg.com/vi/WhWc3b3KhnY/hqdefault.jpg",
-      "desc": "A young shepherd and her dog must brave ancient spirits to keep the cycle of seasons turning.",
-      "tags": [
-        "animation",
-        "fantasy",
-        "blender"
-      ]
-    },
-    {
-      "id": "v8",
-      "title": "Coffee Run",
-      "channel": "ch-cartoons",
-      "category": "Cartoons",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=PVGeM40dABA",
-      "duration": "3:04",
-      "thumb": "https://i.ytimg.com/vi/PVGeM40dABA/hqdefault.jpg",
-      "desc": "Fueled by caffeine, a young woman runs through the bittersweet memories of her past relationship.",
-      "tags": [
-        "animation",
-        "blender"
-      ]
-    },
-    {
-      "id": "v9",
-      "title": "Sprite Fright",
-      "channel": "ch-cartoons",
-      "category": "Cartoons",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=_cMxraX_5RE",
-      "duration": "10:22",
-      "thumb": "https://i.ytimg.com/vi/_cMxraX_5RE/hqdefault.jpg",
-      "desc": "Rowdy teenagers camping in a British forest discover that the mushroom creatures living there are not as friendly as they seem.",
-      "tags": [
-        "animation",
-        "horror-comedy",
-        "blender"
-      ]
-    },
-    {
-      "id": "v10",
-      "title": "The Internet's Own Boy: The Story of Aaron Swartz",
-      "channel": "ch-docs",
-      "category": "Documentaries",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=M85UvH0TRPc",
-      "duration": "1:45:12",
-      "thumb": "https://i.ytimg.com/vi/M85UvH0TRPc/hqdefault.jpg",
-      "desc": "The story of programming prodigy and information activist Aaron Swartz, from RSS to Reddit and his fight for open access.",
-      "tags": [
-        "documentary",
-        "tech",
-        "activism"
-      ]
-    },
-    {
-      "id": "v11",
-      "title": "Steve Jobs' 2005 Stanford Commencement Address",
-      "channel": "ch-tech",
-      "category": "Tech",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=UF8uR6Z6KLc",
-      "duration": "15:06",
-      "thumb": "https://i.ytimg.com/vi/UF8uR6Z6KLc/hqdefault.jpg",
-      "desc": "Your time is limited, so don't waste it living someone else's life. Jobs' legendary speech about life, death, and following your heart.",
-      "tags": [
-        "tech",
-        "speech",
-        "inspiration"
-      ]
-    },
-    {
-      "id": "v12",
-      "title": "Lofi Girl - 24/7 Beats to Relax/Study To",
-      "channel": "ch-music",
-      "category": "Music",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=jfKfPfyJRdk",
-      "duration": "LIVE",
-      "thumb": "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg",
-      "desc": "Endless chill lofi beats, streaming live around the clock. Perfect for studying, working, or unwinding.",
-      "tags": [
-        "music",
-        "live",
-        "chill"
-      ]
-    },
-    {
-      "id": "c1",
-      "title": "Never Seen Before — Prophet T.B. Joshua's Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=ldWEzF0ApBQ",
-      "duration": "17:40",
-      "thumb": "https://i.ytimg.com/vi/ldWEzF0ApBQ/hqdefault.jpg",
-      "desc": "Rare archival footage from Prophet T.B. Joshua's earliest ministry days at The Synagogue, Church Of All Nations.",
-      "tags": [
-        "tb joshua",
-        "early ministry",
-        "rare footage",
-        "prophet"
-      ]
-    },
-    {
-      "id": "c2",
-      "title": "T.B. Joshua's First Ever Crusade in 1992",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=AKCsjHLVqXM",
-      "duration": "1:00",
-      "thumb": "https://i.ytimg.com/vi/AKCsjHLVqXM/hqdefault.jpg",
-      "desc": "A precious one-minute glimpse of the very first crusade of Prophet T.B. Joshua, held in 1992.",
-      "tags": [
-        "tb joshua",
-        "1992",
-        "crusade",
-        "early ministry"
-      ]
-    },
-    {
-      "id": "c3",
-      "title": "Rare Footage from Prophet T.B. Joshua's Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=5zkVQoS4SLk",
-      "duration": "1:23",
-      "thumb": "https://i.ytimg.com/vi/5zkVQoS4SLk/hqdefault.jpg",
-      "desc": "Recovered early-ministry footage showing the humble beginnings of the ministry in Lagos, Nigeria.",
-      "tags": [
-        "tb joshua",
-        "rare footage",
-        "early ministry",
-        "nigeria"
-      ]
-    },
-    {
-      "id": "c4",
-      "title": "Episode 02 — Rare Footage from Prophet T.B. Joshua's Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=KMJGBBIkyuw",
-      "duration": "2:55",
-      "thumb": "https://i.ytimg.com/vi/KMJGBBIkyuw/hqdefault.jpg",
-      "desc": "Part two of the recovered early-ministry archive series from Emmanuel TV Connect.",
-      "tags": [
-        "tb joshua",
-        "rare footage",
-        "early ministry",
-        "emmanuel tv"
-      ]
-    },
-    {
-      "id": "c5",
-      "title": "Rare Footage of Prophet T.B. Joshua's Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=GSDdRACuMeI",
-      "duration": "4:52",
-      "thumb": "https://i.ytimg.com/vi/GSDdRACuMeI/hqdefault.jpg",
-      "desc": "A look back at the prayer lines and early services that shaped the ministry in its first years.",
-      "tags": [
-        "tb joshua",
-        "rare footage",
-        "prayer",
-        "early ministry"
-      ]
-    },
-    {
-      "id": "c6",
-      "title": "Rare Footage — T.B. Joshua Early Church",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=qoTL65Ur-GU",
-      "duration": "4:50",
-      "thumb": "https://i.ytimg.com/vi/qoTL65Ur-GU/hqdefault.jpg",
-      "desc": "Inside the early church: the small beginnings before the auditorium, when the congregation gathered in humility.",
-      "tags": [
-        "tb joshua",
-        "early church",
-        "rare footage",
-        "scoan"
-      ]
-    },
-    {
-      "id": "c7",
-      "title": "Prophet T.B. Joshua's Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=E5IwweeGWfQ",
-      "duration": "17:40",
-      "thumb": "https://i.ytimg.com/vi/E5IwweeGWfQ/hqdefault.jpg",
-      "desc": "Extended documentary-style footage tracing the calling and early years of Prophet T.B. Joshua.",
-      "tags": [
-        "tb joshua",
-        "early ministry",
-        "documentary",
-        "prophet"
-      ]
-    },
-    {
-      "id": "c8",
-      "title": "The Raw Power of God Falls on Children — T.B. Joshua Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=k-iiyKZ6KKg",
-      "duration": "9:39",
-      "thumb": "https://i.ytimg.com/vi/k-iiyKZ6KKg/hqdefault.jpg",
-      "desc": "Moments from the early ministry as the power of God moves mightily, even upon little children.",
-      "tags": [
-        "tb joshua",
-        "early ministry",
-        "holy spirit",
-        "prayer"
-      ]
-    },
-    {
       "id": "c9",
       "title": "Be An Imitator of God — Prophet T.B. Joshua Sermon",
-      "channel": "ch-church",
-      "category": "Church",
+      "channel": "ch-services",
+      "category": "Sunday Service",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=CJPPPl1iscI",
       "duration": "44:58",
@@ -391,8 +94,8 @@
     {
       "id": "c10",
       "title": "Hold On and Keep Fighting — Prophet T.B. Joshua Sermon",
-      "channel": "ch-church",
-      "category": "Church",
+      "channel": "ch-services",
+      "category": "Sunday Service",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=Rpxih7IEI6U",
       "duration": "56:01",
@@ -406,111 +109,10 @@
       ]
     },
     {
-      "id": "c11",
-      "title": "How To Know The Purpose Of Your Life — Dr. Myles Munroe",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=gTgcGlnK1kk",
-      "duration": "1:14:12",
-      "thumb": "https://i.ytimg.com/vi/gTgcGlnK1kk/hqdefault.jpg",
-      "desc": "Dr. Myles Munroe's classic teaching on discovering God's purpose for your life and finding true direction.",
-      "tags": [
-        "myles munroe",
-        "purpose",
-        "teaching",
-        "classic sermon"
-      ]
-    },
-    {
-      "id": "c12",
-      "title": "Unchanging Love — Billy Graham Classic Sermon",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=KX5R7dcTYiU",
-      "duration": "27:32",
-      "thumb": "https://i.ytimg.com/vi/KX5R7dcTYiU/hqdefault.jpg",
-      "desc": "Billy Graham preaches on the unchanging love of God in this classic message from the Billy Graham Evangelistic Association.",
-      "tags": [
-        "billy graham",
-        "classic sermon",
-        "love",
-        "gospel"
-      ]
-    },
-    {
-      "id": "c13",
-      "title": "The Real Meaning of the Cross — Billy Graham Classic Sermon",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=z1mcW0RSW7w",
-      "duration": "27:32",
-      "thumb": "https://i.ytimg.com/vi/z1mcW0RSW7w/hqdefault.jpg",
-      "desc": "Billy Graham explains the real meaning of the cross in this timeless evangelistic message.",
-      "tags": [
-        "billy graham",
-        "classic sermon",
-        "the cross",
-        "gospel"
-      ]
-    },
-    {
-      "id": "c14",
-      "title": "Episode 01 — Rare Footage from Prophet T.B. Joshua's Early Ministry",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=kYwAFfZoxfc",
-      "duration": "1:23",
-      "thumb": "https://i.ytimg.com/vi/kYwAFfZoxfc/hqdefault.jpg",
-      "desc": "The first episode of the recovered early-ministry archive series from Emmanuel TV Connect.",
-      "tags": [
-        "tb joshua",
-        "rare footage",
-        "early ministry",
-        "emmanuel tv"
-      ]
-    },
-    {
-      "id": "c15",
-      "title": "T.B. Joshua — The Daniel of Our Generation",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=Pghh6Njl56o",
-      "duration": "21:18",
-      "thumb": "https://i.ytimg.com/vi/Pghh6Njl56o/hqdefault.jpg",
-      "desc": "A tribute to Prophet T.B. Joshua as the Daniel of our generation — a life of prayer and revelation.",
-      "tags": [
-        "tb joshua",
-        "tribute",
-        "daniel",
-        "prophet"
-      ]
-    },
-    {
-      "id": "c16",
-      "title": "Apostle's Last Prayer with the Prophet",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=jXMDQKMQAag",
-      "duration": "16:56",
-      "thumb": "https://i.ytimg.com/vi/jXMDQKMQAag/hqdefault.jpg",
-      "desc": "An emotional final prayer moment with Prophet T.B. Joshua, captured by Roadmap Ministry International.",
-      "tags": [
-        "tb joshua",
-        "prayer",
-        "roadmap ministry"
-      ]
-    },
-    {
       "id": "c17",
       "title": "T.B. Joshua Legacy — How Godly Promotion Comes to You",
-      "channel": "ch-church",
-      "category": "Church",
+      "channel": "ch-services",
+      "category": "Sunday Service",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=WCAxYzIys2g",
       "duration": "35:17",
@@ -526,8 +128,8 @@
     {
       "id": "c18",
       "title": "How to Receive and Maintain Deliverance — Prophet T.B. Joshua",
-      "channel": "ch-church",
-      "category": "Church",
+      "channel": "ch-services",
+      "category": "Sunday Service",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=Jf01meV5zpw",
       "duration": "35:03",
@@ -541,10 +143,127 @@
       ]
     },
     {
+      "id": "c11",
+      "title": "How To Know The Purpose Of Your Life — Dr. Myles Munroe",
+      "channel": "ch-sermons",
+      "category": "Sermon",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=gTgcGlnK1kk",
+      "duration": "1:14:12",
+      "thumb": "https://i.ytimg.com/vi/gTgcGlnK1kk/hqdefault.jpg",
+      "desc": "Dr. Myles Munroe's classic teaching on discovering God's purpose for your life and finding true direction.",
+      "tags": [
+        "myles munroe",
+        "purpose",
+        "teaching",
+        "classic sermon"
+      ]
+    },
+    {
+      "id": "c12",
+      "title": "Unchanging Love — Billy Graham Classic Sermon",
+      "channel": "ch-sermons",
+      "category": "Sermon",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=KX5R7dcTYiU",
+      "duration": "27:32",
+      "thumb": "https://i.ytimg.com/vi/KX5R7dcTYiU/hqdefault.jpg",
+      "desc": "Billy Graham preaches on the unchanging love of God in this classic message from the Billy Graham Evangelistic Association.",
+      "tags": [
+        "billy graham",
+        "classic sermon",
+        "love",
+        "gospel"
+      ]
+    },
+    {
+      "id": "c13",
+      "title": "The Real Meaning of the Cross — Billy Graham Classic Sermon",
+      "channel": "ch-sermons",
+      "category": "Sermon",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=z1mcW0RSW7w",
+      "duration": "27:32",
+      "thumb": "https://i.ytimg.com/vi/z1mcW0RSW7w/hqdefault.jpg",
+      "desc": "Billy Graham explains the real meaning of the cross in this timeless evangelistic message.",
+      "tags": [
+        "billy graham",
+        "classic sermon",
+        "the cross",
+        "gospel"
+      ]
+    },
+    {
+      "id": "c15",
+      "title": "T.B. Joshua — The Daniel of Our Generation",
+      "channel": "ch-sermons",
+      "category": "Message",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=Pghh6Njl56o",
+      "duration": "21:18",
+      "thumb": "https://i.ytimg.com/vi/Pghh6Njl56o/hqdefault.jpg",
+      "desc": "A tribute to Prophet T.B. Joshua as the Daniel of our generation — a life of prayer and revelation.",
+      "tags": [
+        "tb joshua",
+        "tribute",
+        "daniel",
+        "prophet"
+      ]
+    },
+    {
+      "id": "c20",
+      "title": "Prophet T.B. Joshua's Extraordinary Anointing",
+      "channel": "ch-sermons",
+      "category": "Message",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=9TQRM5hskGw",
+      "duration": "24:13",
+      "thumb": "https://i.ytimg.com/vi/9TQRM5hskGw/hqdefault.jpg",
+      "desc": "A look at the extraordinary anointing upon Prophet T.B. Joshua's life and ministry.",
+      "tags": [
+        "tb joshua",
+        "anointing",
+        "ministry"
+      ]
+    },
+    {
+      "id": "c8",
+      "title": "The Raw Power of God Falls on Children — T.B. Joshua Early Ministry",
+      "channel": "ch-prayer",
+      "category": "Prayer",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=k-iiyKZ6KKg",
+      "duration": "9:39",
+      "thumb": "https://i.ytimg.com/vi/k-iiyKZ6KKg/hqdefault.jpg",
+      "desc": "Moments from the early ministry as the power of God moves mightily, even upon little children.",
+      "tags": [
+        "tb joshua",
+        "early ministry",
+        "holy spirit",
+        "prayer"
+      ]
+    },
+    {
+      "id": "c16",
+      "title": "Apostle's Last Prayer with the Prophet",
+      "channel": "ch-prayer",
+      "category": "Prayer",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=jXMDQKMQAag",
+      "duration": "16:56",
+      "thumb": "https://i.ytimg.com/vi/jXMDQKMQAag/hqdefault.jpg",
+      "desc": "An emotional final prayer moment with Prophet T.B. Joshua, captured by Roadmap Ministry International.",
+      "tags": [
+        "tb joshua",
+        "prayer",
+        "roadmap ministry"
+      ]
+    },
+    {
       "id": "c19",
       "title": "Morning Prayer — Distance Is Not a Barrier",
-      "channel": "ch-church",
-      "category": "Church",
+      "channel": "ch-prayer",
+      "category": "Prayer",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=S0cjWCZQrbk",
       "duration": "11:37",
@@ -558,60 +277,10 @@
       ]
     },
     {
-      "id": "c20",
-      "title": "Prophet T.B. Joshua's Extraordinary Anointing",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=9TQRM5hskGw",
-      "duration": "24:13",
-      "thumb": "https://i.ytimg.com/vi/9TQRM5hskGw/hqdefault.jpg",
-      "desc": "A look at the extraordinary anointing upon Prophet T.B. Joshua's life and ministry.",
-      "tags": [
-        "tb joshua",
-        "anointing",
-        "ministry"
-      ]
-    },
-    {
-      "id": "c21",
-      "title": "T.B. Joshua's Humble Beginnings",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=cHg85huU0ns",
-      "duration": "47:08",
-      "thumb": "https://i.ytimg.com/vi/cHg85huU0ns/hqdefault.jpg",
-      "desc": "From a humble start to a worldwide ministry — the story of Prophet T.B. Joshua's beginnings.",
-      "tags": [
-        "tb joshua",
-        "humble beginnings",
-        "biography",
-        "early ministry"
-      ]
-    },
-    {
-      "id": "c22",
-      "title": "This Is My Life — T.B. Joshua Full Documentary",
-      "channel": "ch-church",
-      "category": "Church",
-      "type": "youtube",
-      "source": "https://www.youtube.com/watch?v=vQ5XWIZIPX8",
-      "duration": "1:10:10",
-      "thumb": "https://i.ytimg.com/vi/vQ5XWIZIPX8/hqdefault.jpg",
-      "desc": "A full documentary on Prophet T.B. Joshua's life and journey, told in his own words.",
-      "tags": [
-        "tb joshua",
-        "documentary",
-        "biography",
-        "life story"
-      ]
-    },
-    {
       "id": "c23",
       "title": "30 Most Powerful & Anointed Life-Changing Prayers of Prophet T.B. Joshua",
-      "channel": "ch-church",
-      "category": "Church",
+      "channel": "ch-prayer",
+      "category": "Prayer",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=2Z-4QsYeruc",
       "duration": "7:52:14",
@@ -628,7 +297,7 @@
       "id": "s1",
       "title": "I Love You Lord — Original Song (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=lFMcyWBCVlk",
       "duration": "8:21",
@@ -645,7 +314,7 @@
       "id": "s2",
       "title": "I Love You Lord — Original Song (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=Zov84MmRrZE",
       "duration": "17:45",
@@ -662,7 +331,7 @@
       "id": "s3",
       "title": "Son of David, Have Mercy on Me — T.B. Joshua Composition",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=65krlZYWfjk",
       "duration": "9:00",
@@ -679,7 +348,7 @@
       "id": "s4",
       "title": "Oluranlowo (You Are My Helper) — T.B. Joshua Composition",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=pPudXRrCh_I",
       "duration": "9:00",
@@ -696,7 +365,7 @@
       "id": "s5",
       "title": "Thank You Lord — Composed by Prophet T.B. Joshua",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=KkMUfA8po0I",
       "duration": "4:28",
@@ -713,7 +382,7 @@
       "id": "s6",
       "title": "Hallelujah — Original Song (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=manmmps6tZY",
       "duration": "8:53",
@@ -730,7 +399,7 @@
       "id": "s7",
       "title": "Come and Dwell — Original Song (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=b-XK2RpfT9Y",
       "duration": "8:38",
@@ -747,7 +416,7 @@
       "id": "s8",
       "title": "Acknowledge God — SCOAN Choir (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=m3_ATYU-9J4",
       "duration": "7:21",
@@ -764,7 +433,7 @@
       "id": "s9",
       "title": "I Am Loved by God — Emmanuel TV Singers (T.B. Joshua Composition)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=RFdOkiPEQJI",
       "duration": "6:09",
@@ -781,7 +450,7 @@
       "id": "s10",
       "title": "I Belong to You — Emmanuel Singers (SCOAN)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=jSZMcKssvYw",
       "duration": "16:09",
@@ -798,7 +467,7 @@
       "id": "s11",
       "title": "Lighten the Word — Original Song (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=IXgmsSDfGRY",
       "duration": "14:42",
@@ -815,7 +484,7 @@
       "id": "s12",
       "title": "Free Access — Original Song (Composed by T.B. Joshua)",
       "channel": "ch-songs",
-      "category": "Songs",
+      "category": "Worship & Songs",
       "type": "youtube",
       "source": "https://www.youtube.com/watch?v=p32BRY2xCvo",
       "duration": "7:56",
@@ -827,6 +496,177 @@
         "free access",
         "worship"
       ]
+    },
+    {
+      "id": "c1",
+      "title": "Never Seen Before — Prophet T.B. Joshua's Early Ministry",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=ldWEzF0ApBQ",
+      "duration": "17:40",
+      "thumb": "https://i.ytimg.com/vi/ldWEzF0ApBQ/hqdefault.jpg",
+      "desc": "Rare archival footage from Prophet T.B. Joshua's earliest ministry days at The Synagogue, Church Of All Nations.",
+      "tags": [
+        "tb joshua",
+        "early ministry",
+        "rare footage",
+        "prophet"
+      ]
+    },
+    {
+      "id": "c2",
+      "title": "T.B. Joshua's First Ever Crusade in 1992",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=AKCsjHLVqXM",
+      "duration": "1:00",
+      "thumb": "https://i.ytimg.com/vi/AKCsjHLVqXM/hqdefault.jpg",
+      "desc": "A precious one-minute glimpse of the very first crusade of Prophet T.B. Joshua, held in 1992.",
+      "tags": [
+        "tb joshua",
+        "1992",
+        "crusade",
+        "early ministry"
+      ]
+    },
+    {
+      "id": "c3",
+      "title": "Rare Footage from Prophet T.B. Joshua's Early Ministry",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=5zkVQoS4SLk",
+      "duration": "1:23",
+      "thumb": "https://i.ytimg.com/vi/5zkVQoS4SLk/hqdefault.jpg",
+      "desc": "Recovered early-ministry footage showing the humble beginnings of the ministry in Lagos, Nigeria.",
+      "tags": [
+        "tb joshua",
+        "rare footage",
+        "early ministry",
+        "nigeria"
+      ]
+    },
+    {
+      "id": "c4",
+      "title": "Episode 02 — Rare Footage from Prophet T.B. Joshua's Early Ministry",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=KMJGBBIkyuw",
+      "duration": "2:55",
+      "thumb": "https://i.ytimg.com/vi/KMJGBBIkyuw/hqdefault.jpg",
+      "desc": "Part two of the recovered early-ministry archive series from Emmanuel TV Connect.",
+      "tags": [
+        "tb joshua",
+        "rare footage",
+        "early ministry",
+        "emmanuel tv"
+      ]
+    },
+    {
+      "id": "c5",
+      "title": "Rare Footage of Prophet T.B. Joshua's Early Ministry",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=GSDdRACuMeI",
+      "duration": "4:52",
+      "thumb": "https://i.ytimg.com/vi/GSDdRACuMeI/hqdefault.jpg",
+      "desc": "A look back at the prayer lines and early services that shaped the ministry in its first years.",
+      "tags": [
+        "tb joshua",
+        "rare footage",
+        "prayer",
+        "early ministry"
+      ]
+    },
+    {
+      "id": "c6",
+      "title": "Rare Footage — T.B. Joshua Early Church",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=qoTL65Ur-GU",
+      "duration": "4:50",
+      "thumb": "https://i.ytimg.com/vi/qoTL65Ur-GU/hqdefault.jpg",
+      "desc": "Inside the early church: the small beginnings before the auditorium, when the congregation gathered in humility.",
+      "tags": [
+        "tb joshua",
+        "early church",
+        "rare footage",
+        "scoan"
+      ]
+    },
+    {
+      "id": "c7",
+      "title": "Prophet T.B. Joshua's Early Ministry",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=E5IwweeGWfQ",
+      "duration": "17:40",
+      "thumb": "https://i.ytimg.com/vi/E5IwweeGWfQ/hqdefault.jpg",
+      "desc": "Extended documentary-style footage tracing the calling and early years of Prophet T.B. Joshua.",
+      "tags": [
+        "tb joshua",
+        "early ministry",
+        "documentary",
+        "prophet"
+      ]
+    },
+    {
+      "id": "c14",
+      "title": "Episode 01 — Rare Footage from Prophet T.B. Joshua's Early Ministry",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=kYwAFfZoxfc",
+      "duration": "1:23",
+      "thumb": "https://i.ytimg.com/vi/kYwAFfZoxfc/hqdefault.jpg",
+      "desc": "The first episode of the recovered early-ministry archive series from Emmanuel TV Connect.",
+      "tags": [
+        "tb joshua",
+        "rare footage",
+        "early ministry",
+        "emmanuel tv"
+      ]
+    },
+    {
+      "id": "c21",
+      "title": "T.B. Joshua's Humble Beginnings",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=cHg85huU0ns",
+      "duration": "47:08",
+      "thumb": "https://i.ytimg.com/vi/cHg85huU0ns/hqdefault.jpg",
+      "desc": "From a humble start to a worldwide ministry — the story of Prophet T.B. Joshua's beginnings.",
+      "tags": [
+        "tb joshua",
+        "humble beginnings",
+        "biography",
+        "early ministry"
+      ]
+    },
+    {
+      "id": "c22",
+      "title": "This Is My Life — T.B. Joshua Full Documentary",
+      "channel": "ch-archive",
+      "category": "Archive",
+      "type": "youtube",
+      "source": "https://www.youtube.com/watch?v=vQ5XWIZIPX8",
+      "duration": "1:10:10",
+      "thumb": "https://i.ytimg.com/vi/vQ5XWIZIPX8/hqdefault.jpg",
+      "desc": "A full documentary on Prophet T.B. Joshua's life and journey, told in his own words.",
+      "tags": [
+        "tb joshua",
+        "documentary",
+        "biography",
+        "life story"
+      ]
     }
-  ]
+  ],
+  "testimonies": []
 }

@@ -1,4 +1,4 @@
-/* ============ DWIM TV — Admin Panel logic ============ */
+/* ============ DWIM TV — Admin Panel logic (Destiny Word International Ministries) ============ */
 
 let CHANNELS = [];
 let VIDEOS = [];
@@ -42,7 +42,7 @@ async function login(e) {
     });
     const j = await r.json();
     if (j.ok) {
-      session = 'ntando';
+      session = 'dwim';
       showDash();
     } else {
       msg(msgEl, j.error || 'Login failed', false);
@@ -209,10 +209,42 @@ function broadcastChannelSupported() {
   return !!bc;
 }
 
+/* ---------- live stream control ---------- */
+async function saveLive(e) {
+  e.preventDefault();
+  const msgEl = document.getElementById('liveMsg');
+  const btn = document.getElementById('btnLive');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/live', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: document.getElementById('liveUrl').value.trim() })
+    });
+    const j = await r.json();
+    if (j.ok) {
+      const on = j.live && j.live.source;
+      let extra = j.github && j.github.ok ? ' · Synced to GitHub ✓' : '';
+      msg(msgEl, on ? 'Live stream set — the site is ON AIR!' + extra : 'Live stream cleared.' + extra, true);
+      document.getElementById('liveUrl').value = '';
+      refreshPublicCatalog();
+    } else {
+      msg(msgEl, j.error || 'Failed to set live stream', false);
+    }
+  } catch (err) {
+    msg(msgEl, 'Failed: ' + err.message, false);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Set / Clear';
+  }
+}
+
 /* ---------- boot ---------- */
 document.getElementById('loginForm').addEventListener('submit', login);
 document.getElementById('addForm').addEventListener('submit', addVideo);
 document.getElementById('btnVerify').addEventListener('click', verify);
+document.getElementById('liveForm').addEventListener('submit', saveLive);
 
 (async () => {
   if (await checkSession()) showDash();

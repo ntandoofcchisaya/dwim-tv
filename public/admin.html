@@ -16,8 +16,8 @@
   <div class="admin-login" id="loginScreen">
     <div class="login-card">
       <img src="img/logo-192.png" alt="DWIM TV" class="login-logo">
-      <h1>Admin Panel</h1>
-      <p class="login-sub">Sign in to manage DWIM TV</p>
+      <h1>DWIM TV Admin</h1>
+      <p class="login-sub">Manage Destiny Word International Ministries' channel</p>
       <form id="loginForm" autocomplete="off">
         <label>Username
           <input id="loginUser" type="text" placeholder="Username" required>
@@ -28,7 +28,7 @@
         <div class="form-msg" id="loginMsg"></div>
         <button class="btn-admin-primary" type="submit">Sign In</button>
       </form>
-      <a class="back-link" href="index.html">← Back to DWIM TV</a>
+      <a class="back-link" href="index.html">&#8592; Back to DWIM TV</a>
     </div>
   </div>
 
@@ -40,15 +40,15 @@
         <span>DWIM <b>TV</b> — Admin</span>
       </a>
       <div class="admin-top-right">
-        <span class="admin-badge">👤 <span id="whoami">ntando</span></span>
-        <a href="index.html" class="btn-admin-ghost" target="_blank">View Site ↗</a>
+        <span class="admin-badge">&#128100; <span id="whoami">admin</span></span>
+        <a href="index.html" class="btn-admin-ghost" target="_blank">View Site &#8599;</a>
         <button class="btn-admin-ghost" onclick="logout()">Log Out</button>
       </div>
     </header>
 
     <main class="admin-main">
       <h2>Add a Video</h2>
-      <p class="hint">Paste any YouTube link or 11-character video ID. I'll fetch the real title &amp; channel from YouTube.</p>
+      <p class="hint">Paste any YouTube link or 11-character video ID — sermons, services, worship or prayers. The real title &amp; channel are fetched from YouTube automatically.</p>
 
       <form id="addForm" class="add-card">
         <div class="row">
@@ -80,15 +80,27 @@
           Create a new channel instead
         </label>
         <div id="newChBox" style="display:none" class="row two">
-          <label>New channel name <input id="newChName" type="text" placeholder="e.g. Sports"></label>
-          <label>Icon (emoji) <input id="newChIcon" type="text" placeholder="⚽" maxlength="4"></label>
+          <label>New channel name <input id="newChName" type="text" placeholder="e.g. Conferences"></label>
+          <label>Icon (emoji) <input id="newChIcon" type="text" placeholder="&#9873;" maxlength="4"></label>
         </div>
 
         <label>Description <textarea id="vidDesc" rows="2" placeholder="Optional — shown under the video"></textarea></label>
         <label>Tags <input id="vidTags" type="text" placeholder="comma,separated,tags (optional)"></label>
 
         <div class="form-msg" id="addMsg"></div>
-        <button class="btn-admin-primary" type="submit" id="btnAdd">➕ Add Video to DWIM TV</button>
+        <button class="btn-admin-primary" type="submit" id="btnAdd">&#10133; Add Video to DWIM TV</button>
+      </form>
+
+      <h2 style="margin-top:38px">&#128308; Live Stream Control</h2>
+      <p class="hint">Paste your YouTube live stream URL before a Sunday Service. The site shows an <b>ON AIR</b> banner and the "Watch Live" button joins the stream. Clear it after the service ends.</p>
+      <form id="liveForm" class="add-card">
+        <div class="row">
+          <label class="grow">YouTube Live URL (leave empty to clear)
+            <input id="liveUrl" type="text" placeholder="https://www.youtube.com/watch?v=LIVE_ID…">
+          </label>
+          <button type="submit" class="btn-admin-primary" id="btnLive">Set / Clear</button>
+        </div>
+        <div class="form-msg" id="liveMsg"></div>
       </form>
 
       <h2 style="margin-top:38px">Catalog <span id="stats" class="stat-pill"></span></h2>
@@ -103,7 +115,7 @@
     </main>
 
     <footer class="footer">
-      <p><b>DWIM TV</b> — Admin Panel. Changes are saved to the catalog and synced to GitHub automatically.</p>
+      <p><b>DWIM TV</b> — Admin Panel for Destiny Word International Ministries. Changes are saved to the catalog and synced to GitHub automatically.</p>
     </footer>
   </div>
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DWIM TV — Stream Free</title>
-  <meta name="description" content="DWIM TV — your free TV-style streaming app. Movies, cartoons, documentaries, tech, music and more.">
+  <title>DWIM TV — Destiny Word International Ministries</title>
+  <meta name="description" content="DWIM TV — the official channel of Destiny Word International Ministries. Watch live Sunday services, anointed sermons, worship, prayer and testimonies. Distance is not a barrier!">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="img/logo-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -13,50 +13,218 @@
 </head>
 <body>
 
-  <!-- Top Bar -->
+  <!-- ===== Top Bar ===== -->
   <header class="topbar">
     <a class="brand" href="#" onclick="goHome(event)">
       <span class="tv-icon"><img src="img/logo-64.png" alt="DWIM TV"></span>
-      <span>DWIM <b>TV</b></span>
+      <span class="brand-name">DWIM <b>TV</b></span>
     </a>
-    <div class="live-dot"><span class="pulse"></span><span class="word">ON AIR</span></div>
+    <nav class="topnav">
+      <a href="#watch">Watch</a>
+      <a href="#prayer">Prayer</a>
+      <a href="#testimonies">Testimonies</a>
+      <a href="#giving">Give</a>
+      <a href="#about">About</a>
+      <a href="#visit">Visit Us</a>
+    </nav>
+    <div class="live-dot" id="liveDot"><span class="pulse"></span><span class="word">LIVE SUNDAYS</span></div>
     <div class="searchwrap">
-      <span class="icon">⌕</span>
-      <input id="search" type="text" placeholder="Search movies, shows, docs…" autocomplete="off">
+      <span class="icon">&#9903;</span>
+      <input id="search" type="text" placeholder="Search sermons, songs, prayers…" autocomplete="off">
     </div>
+    <button class="btn-live-sm" onclick="watchLive()">&#9654; Watch Live</button>
   </header>
 
-  <!-- Channel Rail -->
+  <!-- ===== Hero: Next Service + Live ===== -->
+  <section class="hero-church" id="hero">
+    <img class="hero-bg" src="img/hero-worship.jpg" alt="DWIM worship service">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">&#10022; Destiny Word International Ministries</span>
+      <h1 class="hero-theme">The Year of <span class="gold">Divine Remembrance</span></h1>
+      <p class="hero-note">Dismantling strongholds by the power of the Holy Ghost — worship, the Word and divine encounter.</p>
+      <p class="hero-verse" id="themeVerse">“For the weapons of our warfare are not carnal but mighty through God for the pulling down of strongholds.” — 2 Corinthians 10:4</p>
+
+      <div class="hero-actions">
+        <button class="btn-play-hero" onclick="watchLive()">&#9654; Watch Live Service</button>
+        <a class="btn-ghost-hero" href="#watch">Browse Sermons</a>
+      </div>
+
+      <div class="countdown" id="countdown">
+        <div class="cd-label">Next Sunday Service begins in</div>
+        <div class="cd-grid">
+          <div class="cd-cell"><span id="cdD">–</span><small>Days</small></div>
+          <div class="cd-cell"><span id="cdH">–</span><small>Hours</small></div>
+          <div class="cd-cell"><span id="cdM">–</span><small>Minutes</small></div>
+          <div class="cd-cell"><span id="cdS">–</span><small>Seconds</small></div>
+        </div>
+        <div class="cd-when">Sundays · 11:00 AM (CAT) · Old Ascot, Gweru</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Live Banner (when stream set) ===== -->
+  <div class="live-banner" id="liveBanner" style="display:none">
+    <span class="live-tag"><span class="pulse"></span> ON AIR NOW</span>
+    <span id="liveTitle" class="live-banner-title">DWIM TV Live</span>
+    <button class="btn-play" onclick="watchLive()">&#9654; Join the Service</button>
+  </div>
+
+  <!-- ===== Channel Rail ===== -->
   <nav class="channels" id="channels"></nav>
 
-  <!-- Main -->
+  <!-- ===== Main Video Area ===== -->
   <main id="main">
-    <div class="loading" id="loading"><div class="spinner"></div>Loading your channels…</div>
+    <div class="loading" id="loading"><div class="spinner"></div>Loading the channel…</div>
   </main>
 
-  <!-- Player Modal -->
+  <!-- ===== Prayer Request ===== -->
+  <section class="section-block prayer-block" id="prayer">
+    <img class="block-bg" src="img/banner-prayer.jpg" alt="DWIM prayer">
+    <div class="block-overlay"></div>
+    <div class="block-content">
+      <span class="block-kicker">&#128591; Prayer &amp; Intercession</span>
+      <h2>Distance Is Not a Barrier</h2>
+      <p>Whatever you are facing — sickness, bondage, lack, family struggles — bring it to the altar of God. Send us your prayer request and our prayer team will stand with you in faith, wherever you are in the world.</p>
+      <p class="scripture">“Call unto me, and I will answer thee, and shew thee great and mighty things, which thou knowest not.” — Jeremiah 33:3</p>
+      <div class="block-actions">
+        <a class="btn-gold" id="prayerBtn" href="#prayer">&#9993; Send a Prayer Request</a>
+        <button class="btn-outline-light" onclick="playFirstOf('ch-prayer')">&#9654; Pray Along Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Testimonies ===== -->
+  <section class="section-block testimonies-wrap" id="testimonies">
+    <div class="testi-head">
+      <span class="block-kicker gold-kicker">&#9873; Testimonies</span>
+      <h2>What God Has Done Among Us</h2>
+      <p class="testi-sub">We overcome by the blood of the Lamb and the word of our testimony (Revelation 12:11). Share what the Lord has done in your life through DWIM.</p>
+    </div>
+    <div class="testi-grid" id="testiGrid">
+      <div class="testi-card">
+        <p class="testi-text">“Since I started joining the DWIM prayer line, my life has never been the same. Strongholds that held my family for years were dismantled in one night of prayer. God is truly in this place!”</p>
+        <div class="testi-person"><span class="testi-avatar">&#9873;</span><div><b>M. from Gweru</b><small>Deliverance Testimony</small></div></div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">“I was healed of a sickness the doctors could not explain, after the Apostle prayed for me on the prayer line. Distance is truly not a barrier — I was watching from another city!”</p>
+        <div class="testi-person"><span class="testi-avatar">&#10010;</span><div><b>T. from Harare</b><small>Healing Testimony</small></div></div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">“The Word of God taught here gave me direction when my life had none. I found my destiny in Christ through Destiny Word International Ministries. To God be the glory!”</p>
+        <div class="testi-person"><span class="testi-avatar">&#9831;</span><div><b>S. from Bulawayo</b><small>Restoration Testimony</small></div></div>
+      </div>
+    </div>
+    <div class="testi-cta">
+      <a class="btn-outline-light" id="testiBtn" href="#testimonies">&#9998; Share Your Testimony</a>
+    </div>
+  </section>
+
+  <!-- ===== Giving & Partnership ===== -->
+  <section class="section-block giving-block" id="giving">
+    <img class="block-bg" src="img/banner-giving.jpg" alt="DWIM giving">
+    <div class="block-overlay"></div>
+    <div class="block-content">
+      <span class="block-kicker">&#127806; Giving &amp; Partnership</span>
+      <h2>Sow Into Destiny</h2>
+      <p id="givingNote">Your tithes, offerings and seeds fuel the gospel — carrying the Word of destiny to homes, cities and nations through DWIM TV. Give once, or become a DWIM Partner and stand with us every month in reaching a troubled world with the love of Christ.</p>
+      <div class="block-actions">
+        <a class="btn-gold" id="giveBtn" href="#giving">&#9878; Give / Become a Partner</a>
+        <a class="btn-outline-light" id="giveContact" href="#giving">Contact the Church Office</a>
+      </div>
+      <p class="giving-scripture">“Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.” — 2 Corinthians 9:7</p>
+    </div>
+  </section>
+
+  <!-- ===== About / Leadership ===== -->
+  <section class="section-block about-wrap" id="about">
+    <div class="testi-head">
+      <span class="block-kicker gold-kicker">&#9873; About DWIM</span>
+      <h2>Raising a People of Destiny</h2>
+      <p class="testi-sub">Destiny Word International Ministries is a Spirit-filled ministry based in Old Ascot, Gweru, Zimbabwe, founded on the Word of God and the power of the Holy Ghost. Through worship, the Word, prayer and prophetic ministry, DWIM is raising sons and daughters who know their destiny in Christ — dismantling strongholds and walking in divine remembrance.</p>
+    </div>
+    <div class="leaders-grid">
+      <article class="leader-card">
+        <div class="leader-photo"><img src="img/apostle-godfrey.jpg" alt="Apostle Godfrey"></div>
+        <h3>Apostle Godfrey</h3>
+        <p class="leader-role">Founder &amp; Senior Pastor</p>
+        <p class="leader-bio">A voice of the Word and the prophetic, Apostle Godfrey carries a burning passion to see strongholds dismantled and destinies discovered in Christ.</p>
+      </article>
+      <article class="leader-card">
+        <div class="leader-photo"><img src="img/apostle-tecla.jpg" alt="Apostle Teckla"></div>
+        <h3>Apostle Teckla</h3>
+        <p class="leader-role">Co-Leader &amp; Prayer Ministry</p>
+        <p class="leader-bio">A mother in the faith and a prayer warrior, Apostle Teckla leads the intercession altar of the house — where distance is never a barrier.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Visit Us ===== -->
+  <section class="visit-wrap" id="visit">
+    <div class="visit-card">
+      <span class="block-kicker gold-kicker">&#9873; Visit Us</span>
+      <h2>Join Us This Sunday</h2>
+      <ul class="visit-list">
+        <li><span class="v-icon">&#128205;</span><div><b>Sunday Service</b><small>Every Sunday · 11:00 AM (CAT)</small></div></li>
+        <li><span class="v-icon">&#128591;</span><div><b>Prayer Line</b><small>Distance is not a barrier — join from anywhere</small></div></li>
+        <li><span class="v-icon">&#127758;</span><div><b>Location</b><small id="visitLoc">Old Ascot, Gweru, Zimbabwe</small></div></li>
+      </ul>
+      <div class="visit-actions">
+        <a class="btn-gold" id="mapLink" href="https://maps.google.com/?q=Old+Ascot,+Gweru,+Zimbabwe" target="_blank" rel="noopener">&#128506; Get Directions</a>
+        <a class="btn-outline-light" id="fbLink" href="#" target="_blank" rel="noopener">&#128244; Follow on Facebook</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Player Modal ===== -->
   <div class="player-modal" id="playerModal">
     <div class="player-box">
       <div class="player-head">
         <h3 id="playerTitle">Now Playing</h3>
-        <button class="btn-close" onclick="closePlayer()">✕</button>
+        <button class="btn-close" onclick="closePlayer()">&#10005;</button>
       </div>
       <div class="player-frame" id="playerFrame"></div>
       <div class="player-info">
         <div class="meta-row">
           <span class="cat" id="playerCat">CATEGORY</span>
           <span id="playerDur">—</span>
-          <span id="playerViews">—</span>
-    </div>
-        <p id="playerDesc">Pick a video to start streaming.</p>
+        </div>
+        <p id="playerDesc">Pick a message to start streaming.</p>
       </div>
     </div>
   </div>
 
+  <!-- ===== Footer ===== -->
   <footer class="footer">
-    <p><b>DWIM TV</b> — demo content is open-source / publicly available media.</p>
-    <p>Videos are streamed from external sources. Not affiliated with any provider.</p>
-    <p class="admin-link"><a href="admin.html">Admin Panel</a></p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="tv-icon"><img src="img/logo-64.png" alt="DWIM TV"></span>
+        <span class="brand-name">DWIM <b>TV</b></span>
+        <p class="footer-tag">Destiny Word International Ministries — raising a people of destiny through the Word. Old Ascot, Gweru, Zimbabwe.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Watch</h4>
+        <a href="#watch" onclick="setChannel('ch-services')">Sunday Services</a>
+        <a href="#watch" onclick="setChannel('ch-sermons')">Sermons &amp; Messages</a>
+        <a href="#watch" onclick="setChannel('ch-prayer')">Prayer &amp; Deliverance</a>
+        <a href="#watch" onclick="setChannel('ch-songs')">Worship &amp; Songs</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="#prayer">Prayer Request</a>
+        <a href="#testimonies">Testimonies</a>
+        <a href="#giving">Give &amp; Partner</a>
+        <a href="#visit">Visit Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Service Times</h4>
+        <p class="footer-note">Sundays · 11:00 AM (CAT)<br>Old Ascot, Gweru, Zimbabwe<br>Distance is not a barrier!</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year">2026</span> Destiny Word International Ministries. All rights reserved. DWIM TV is the official media channel of DWIM.</p>
+      <p>Videos are streamed from external sources (e.g. YouTube) with full credit to the ministry. <span class="admin-link"><a href="admin.html">Admin Panel</a></span></p>
+    </div>
   </footer>
 
   <script src="js/app.js"></script>
