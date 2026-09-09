@@ -31,13 +31,30 @@ function youtubeSrc(video) {
   const id = ytId(video.source);
   if (!id) return `<div style="display:grid;place-items:center;height:100%;color:#9aa3c0;font-weight:700;">&#9888;&#65039; Invalid YouTube link</div>`;
   const t = video.t ? `&start=${Math.floor(video.t)}` : '';
+  // origin must be the exact scheme+host (no path) of the page embedding the player —
+  // YouTube uses this to validate the embed request. A missing/incorrect origin is one
+  // of the most common causes of the "Sign in to confirm you're not a bot" wall.
+  const origin = encodeURIComponent(window.location.origin);
+  const params = [
+    'autoplay=1',
+    'rel=0',
+    'playsinline=1',
+    'modestbranding=1',
+    'enablejsapi=1',
+    `origin=${origin}`
+  ].join('&');
+  const watchUrl = `https://www.youtube.com/watch?v=${id}`;
   return `
     <iframe
-      src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0${t}"
+      src="https://www.youtube-nocookie.com/embed/${id}?${params}${t}"
       title="${esc(video.title)}"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowfullscreen
-      referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="yt-fallback">
+      Video not loading? <a href="${watchUrl}" target="_blank" rel="noopener">Watch it directly on YouTube &#8599;</a>
+    </div>`;
 }
 
 function embedSrc(video) {
