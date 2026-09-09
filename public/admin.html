@@ -47,6 +47,9 @@
     </header>
 
     <main class="admin-main">
+      <h2>Overview</h2>
+      <div class="stats-bar" id="statsBar">Loading stats…</div>
+
       <h2>Add a Video</h2>
       <p class="hint">Paste any YouTube link or 11-character video ID — sermons, services, worship or prayers. The real title &amp; channel are fetched from YouTube automatically.</p>
 
@@ -91,6 +94,21 @@
         <button class="btn-admin-primary" type="submit" id="btnAdd">&#10133; Add Video to DWIM TV</button>
       </form>
 
+      <details class="bulk-details">
+        <summary>Bulk import multiple videos at once</summary>
+        <form id="bulkForm" class="add-card">
+          <label>YouTube URLs or IDs — one per line
+            <textarea id="bulkUrls" rows="5" placeholder="https://www.youtube.com/watch?v=...&#10;https://www.youtube.com/watch?v=...&#10;dQw4w9WgXcQ"></textarea>
+          </label>
+          <label>Channel
+            <select id="bulkChannel"></select>
+          </label>
+          <div class="form-msg" id="bulkMsg"></div>
+          <button class="btn-admin-primary" type="submit" id="btnBulk">&#10133; Import All</button>
+          <div id="bulkResults" class="bulk-results"></div>
+        </form>
+      </details>
+
       <h2 style="margin-top:38px">&#128308; Live Stream Control</h2>
       <p class="hint">Paste your YouTube live stream URL before a Sunday Service. The site shows an <b>ON AIR</b> banner and the "Watch Live" button joins the stream. Clear it after the service ends.</p>
       <form id="liveForm" class="add-card">
@@ -107,12 +125,106 @@
       <div class="table-wrap">
         <table class="admin-table" id="vidTable">
           <thead>
-            <tr><th>Thumb</th><th>Title</th><th>Channel</th><th>Duration</th><th>ID</th><th></th></tr>
+            <tr><th>Thumb</th><th>Title</th><th>Channel</th><th>Duration</th><th>Featured</th><th>ID</th><th></th></tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
+
+      <h2 style="margin-top:38px">Channels</h2>
+      <div class="table-wrap">
+        <table class="admin-table" id="chTable">
+          <thead><tr><th>Icon</th><th>Name</th><th>Videos</th><th>ID</th><th></th></tr></thead>
+          <tbody id="chTbody"></tbody>
+        </table>
+      </div>
+
+      <h2 style="margin-top:38px">Site Images</h2>
+      <p class="hint">Replace the hero banner, giving/prayer banners, logo, or apostle portraits. Images are auto-resized and synced to GitHub.</p>
+      <div class="img-grid" id="imgGrid">Loading images…</div>
+
+      <h2 style="margin-top:38px">Church Info</h2>
+      <p class="hint">Edit service times, contact details and giving info shown across the site — no more hand-editing JSON.</p>
+      <form id="churchForm" class="add-card">
+        <div class="row two">
+          <label>Church name <input id="chName" type="text"></label>
+          <label>Short name <input id="chShort" type="text"></label>
+        </div>
+        <label>Tagline <input id="chTagline" type="text"></label>
+        <div class="row two">
+          <label>Theme <input id="chTheme" type="text"></label>
+          <label>Theme note <input id="chThemeNote" type="text"></label>
+        </div>
+        <label>Theme verse <textarea id="chThemeVerse" rows="2"></textarea></label>
+        <div class="row two">
+          <label>Location <input id="chLocation" type="text"></label>
+          <label>Map URL <input id="chMapUrl" type="text"></label>
+        </div>
+
+        <h3>Services</h3>
+        <div id="chServices"></div>
+        <button type="button" class="btn-admin-ghost" id="btnAddService">&#10133; Add Service Time</button>
+
+        <h3 style="margin-top:22px">Contact</h3>
+        <div class="row two">
+          <label>Facebook <input id="chFacebook" type="text"></label>
+          <label>WhatsApp <input id="chWhatsapp" type="text"></label>
+        </div>
+        <div class="row two">
+          <label>Phone <input id="chPhone" type="text"></label>
+          <label>Email <input id="chEmail" type="text"></label>
+        </div>
+
+        <h3 style="margin-top:22px">Giving</h3>
+        <div class="row two">
+          <label>Bank name <input id="chBankName" type="text"></label>
+          <label>Account name <input id="chAccountName" type="text"></label>
+        </div>
+        <label>Account number <input id="chAccountNumber" type="text"></label>
+        <label>Giving note <textarea id="chGivingNote" rows="2"></textarea></label>
+
+        <div class="form-msg" id="churchMsg"></div>
+        <button class="btn-admin-primary" type="submit">&#128190; Save Church Info</button>
+      </form>
+
+      <h2 style="margin-top:38px">Activity Log</h2>
+      <p class="hint">Who changed what, and when.</p>
+      <div class="table-wrap">
+        <table class="admin-table" id="auditTable">
+          <thead><tr><th>Time</th><th>Action</th><th>Details</th><th>User</th></tr></thead>
+          <tbody id="auditTbody"></tbody>
+        </table>
+      </div>
     </main>
+
+    <!-- ===== Edit Video Modal ===== -->
+    <div class="modal-overlay" id="editModal" style="display:none">
+      <div class="modal-card">
+        <h2>Edit Video</h2>
+        <form id="editForm">
+          <input type="hidden" id="editId">
+          <label>Title <input id="editTitle" type="text"></label>
+          <div class="row two">
+            <label>Duration <input id="editDuration" type="text"></label>
+            <label>Category <input id="editCategory" type="text"></label>
+          </div>
+          <label>Channel
+            <select id="editChannel"></select>
+          </label>
+          <label>Description <textarea id="editDesc" rows="3"></textarea></label>
+          <label>Tags <input id="editTags" type="text" placeholder="comma,separated,tags"></label>
+          <label class="newch-toggle">
+            <input type="checkbox" id="editFeatured">
+            Feature this video on the homepage
+          </label>
+          <div class="form-msg" id="editMsg"></div>
+          <div class="row" style="margin-top:10px">
+            <button type="button" class="btn-admin-ghost" id="btnEditCancel">Cancel</button>
+            <button class="btn-admin-primary" type="submit">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <footer class="footer">
       <p><b>DWIM TV</b> — Admin Panel for Destiny Word International Ministries. Changes are saved to the catalog and synced to GitHub automatically.</p>
