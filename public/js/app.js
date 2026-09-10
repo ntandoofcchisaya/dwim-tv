@@ -154,7 +154,8 @@ function filtered() {
       (v.tags || []).some(t => String(t).toLowerCase().includes(q))
     );
   }
-  return list;
+  // Pinned/featured videos float to the top, otherwise the catalog's own order is kept
+  return list.slice().sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 }
 
 function renderMain() {

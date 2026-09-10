@@ -8,7 +8,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/admin.css">
-<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body class="admin-body">
 
@@ -104,14 +103,97 @@
       </form>
 
       <h2 style="margin-top:38px">Catalog <span id="stats" class="stat-pill"></span></h2>
+      <p class="hint">Click <b>Edit</b> to change a video's title, channel, description, tags or thumbnail. Click the pin to feature a video at the top of its channel. Drag rows by the &#9776; handle to reorder.</p>
       <div class="table-wrap">
         <table class="admin-table" id="vidTable">
           <thead>
-            <tr><th>Thumb</th><th>Title</th><th>Channel</th><th>Duration</th><th>ID</th><th></th></tr>
+            <tr><th></th><th>Thumb</th><th>Title</th><th>Channel</th><th>Duration</th><th>ID</th><th></th></tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
+
+      <!-- ===== Edit Video Modal ===== -->
+      <div class="modal-overlay" id="editOverlay" style="display:none">
+        <div class="modal-card">
+          <h2>Edit Video</h2>
+          <form id="editForm">
+            <input type="hidden" id="editId">
+            <label>Title <input id="editTitle" type="text" required></label>
+            <div class="row two">
+              <label>Channel
+                <select id="editChannel"></select>
+              </label>
+              <label>Duration <input id="editDur" type="text" placeholder="e.g. 12:34"></label>
+            </div>
+            <label>Category label <input id="editCategory" type="text"></label>
+            <label>Description <textarea id="editDesc" rows="2"></textarea></label>
+            <label>Tags <input id="editTags" type="text" placeholder="comma,separated,tags"></label>
+            <label>Thumbnail image URL <input id="editThumb" type="text" placeholder="Leave empty to use the YouTube auto-thumbnail"></label>
+            <p class="hint" style="margin:2px 0 10px">Paste a direct image link (.jpg/.png/.webp) to override the auto-fetched YouTube thumbnail — e.g. a custom poster or cropped photo hosted anywhere. Clear the field to go back to the YouTube thumbnail.</p>
+            <div class="form-msg" id="editMsg"></div>
+            <div class="row" style="justify-content:flex-end;gap:10px">
+              <button type="button" class="btn-admin-ghost" onclick="closeEdit()">Cancel</button>
+              <button type="submit" class="btn-admin-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <h2 style="margin-top:38px">&#9881; Channels</h2>
+      <p class="hint">Rename, re-icon, delete or reorder channels. Drag rows by the &#9776; handle to change the order shown on the site. Deleting a channel moves its videos to <b>Ministry Archive</b> (or another channel you choose) — nothing is ever deleted along with it.</p>
+      <div class="table-wrap">
+        <table class="admin-table" id="chTable">
+          <thead>
+            <tr><th></th><th>Icon</th><th>Name</th><th>Videos</th><th></th></tr>
+          </thead>
+          <tbody id="chBody"></tbody>
+        </table>
+      </div>
+
+      <h2 style="margin-top:38px">&#9962; Church Info</h2>
+      <p class="hint">Edit service times, the theme banner, contact details and giving info shown across the site — no JSON editing required.</p>
+      <form id="churchForm" class="add-card">
+        <div class="row two">
+          <label>Church name <input id="chName" type="text"></label>
+          <label>Short name <input id="chShort" type="text" maxlength="12"></label>
+        </div>
+        <label>Tagline <input id="chTagline" type="text"></label>
+        <div class="row two">
+          <label>Theme title <input id="chTheme" type="text" placeholder="e.g. The Year of Divine Remembrance"></label>
+          <label>Theme note <input id="chThemeNote" type="text" placeholder="e.g. Dismantling Strongholds"></label>
+        </div>
+        <label>Theme verse <input id="chThemeVerse" type="text" placeholder="Quote — Reference"></label>
+        <div class="row two">
+          <label>Location <input id="chLocation" type="text"></label>
+          <label>Map URL <input id="chMapUrl" type="text"></label>
+        </div>
+
+        <h3>Service Times</h3>
+        <div id="servicesList"></div>
+        <button type="button" class="btn-admin-ghost" id="btnAddService">&#10133; Add service time</button>
+
+        <h3 style="margin-top:22px">Contact</h3>
+        <div class="row two">
+          <label>Facebook URL <input id="chFacebook" type="text"></label>
+          <label>WhatsApp (digits, intl format) <input id="chWhatsapp" type="text" placeholder="e.g. 263771234567"></label>
+        </div>
+        <div class="row two">
+          <label>Phone <input id="chPhone" type="text"></label>
+          <label>Email <input id="chEmail" type="text"></label>
+        </div>
+
+        <h3 style="margin-top:22px">Giving</h3>
+        <div class="row two">
+          <label>Bank name <input id="chBankName" type="text"></label>
+          <label>Account name <input id="chAccountName" type="text"></label>
+        </div>
+        <label>Account number <input id="chAccountNumber" type="text"></label>
+        <label>Giving note <textarea id="chGivingNote" rows="2"></textarea></label>
+
+        <div class="form-msg" id="churchMsg"></div>
+        <button class="btn-admin-primary" type="submit">&#128190; Save Church Info</button>
+      </form>
     </main>
 
     <footer class="footer">
