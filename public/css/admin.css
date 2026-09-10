@@ -336,8 +336,113 @@
 
 .btn-del:hover { background: rgba(212, 175, 55, 0.15); }
 
+/* ---------- Buttons: edit / pin / rename ---------- */
+.btn-edit,
+.btn-pin,
+.btn-rename {
+  background: transparent;
+  border: 1px solid var(--border, #2a2a33);
+  color: var(--text-dim, #c9c9d4);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 6px;
+}
+.btn-edit:hover,
+.btn-rename:hover { border-color: var(--gold, #d4af37); color: var(--gold, #d4af37); }
+
+.btn-pin { border-color: rgba(212, 175, 55, 0.4); }
+.btn-pin.is-pinned { background: rgba(212, 175, 55, 0.18); color: var(--gold, #d4af37); border-color: var(--gold, #d4af37); }
+.btn-pin:hover { border-color: var(--gold, #d4af37); }
+
+/* ---------- Drag handle + draggable rows ---------- */
+.drag-handle {
+  cursor: grab;
+  color: var(--text-faint, #9a9aa8);
+  user-select: none;
+  font-size: 15px;
+  text-align: center;
+}
+.admin-table tr.dragging { opacity: 0.4; }
+.admin-table tr.drag-over { border-top: 2px solid var(--gold, #d4af37); }
+
+/* ---------- Edit modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal-card {
+  background: var(--bg-elevated, #16161c);
+  border: 1px solid var(--border, #2a2a33);
+  border-radius: 14px;
+  padding: 26px 28px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-card h2 { margin-top: 0; }
+.modal-card label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  color: var(--text-dim, #c9c9d4);
+}
+.modal-card input,
+.modal-card select,
+.modal-card textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border, #2a2a33);
+  background: #0f0f14;
+  color: var(--text, #fff);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.modal-card input:focus,
+.modal-card select:focus,
+.modal-card textarea:focus { border-color: var(--gold, #d4af37); outline: none; }
+
+/* ---------- Church info form extras ---------- */
+.add-card h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--gold, #d4af37);
+  letter-spacing: 0.4px;
+}
+.service-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+.service-row label { margin-bottom: 0; }
+.btn-remove-row {
+  background: transparent;
+  border: 1px solid rgba(255, 138, 138, 0.4);
+  color: #ff8a8a;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  height: fit-content;
+}
+.btn-remove-row:hover { background: rgba(255, 138, 138, 0.12); }
+
 @media (max-width: 640px) {
   .row { flex-direction: column; align-items: stretch; }
   .row.two { grid-template-columns: 1fr; }
   .admin-main { padding: 20px 14px 30px; }
+  .service-row { grid-template-columns: 1fr; }
 }

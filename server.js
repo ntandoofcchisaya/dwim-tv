@@ -130,6 +130,132 @@ app.get('/api/admin/verify', requireAdmin, async (req, res) => {
   }
 });
 
+/* =========================================================
+   CHURCH INFO — service times, theme banner, contact, giving
+   ========================================================= */
+app.get('/api/admin/church', requireAdmin, (req, res) => {
+  const cat = readCatalog();
+  res.json({ ok: true, church: cat.church || {} });
+});
+
+app.put('/api/admin/church', requireAdmin, async (req, res) => {
+  const body = req.body || {};
+  const cat = readCatalog();
+  const prev = cat.church || {};
+
+  // Whitelisted, shallow-merged fields — keeps unknown/extra keys out of the catalog
+  const church = {
+    ...prev,
+    name: body.name !== undefined ? String(body.name).trim() : prev.name,
+    short: body.short !== undefined ? String(body.short).trim() : prev.short,
+    tagline: body.tagline !== undefined ? String(body.tagline).trim() : prev.tagline,
+    theme: body.theme !== undefined ? String(body.theme).trim() : prev.theme,
+    themeNote: body.themeNote !== undefined ? String(body.themeNote).trim() : prev.themeNote,
+    themeVerse: body.themeVerse !== undefined ? String(body.themeVerse).trim() : prev.themeVerse,
+    location: body.location !== undefined ? String(body.location).trim() : prev.location,
+    mapUrl: body.mapUrl !== undefined ? String(body.mapUrl).trim() : prev.mapUrl,
+    services: Array.isArray(body.services)
+      ? body.services
+          .map(s => ({ name: String((s || {}).name || '').trim(), time: String((s || {}).time || '').trim() }))
+          .filter(s => s.name || s.time)
+      : prev.services,
+    contact: {
+      ...(prev.contact || {}),
+      ...(body.contact ? {
+        facebook: body.contact.facebook !== undefined ? String(body.contact.facebook).trim() : (prev.contact || {}).facebook,
+        whatsapp: body.contact.whatsapp !== undefined ? String(body.contact.whatsapp).trim() : (prev.contact || {}).whatsapp,
+        phone: body.contact.phone !== undefined ? String(body.contact.phone).trim() : (prev.contact || {}).phone,
+        email: body.contact.email !== undefined ? String(body.contact.email).trim() : (prev.contact || {}).email
+      } : {})
+    },
+    giving: {
+      ...(prev.giving || {}),
+      ...(body.giving ? {
+        bankName: body.giving.bankName !== undefined ? String(body.giving.bankName).trim() : (prev.giving || {}).bankName,
+        accountName: body.giving.accountName !== undefined ? String(body.giving.accountName).trim() : (prev.giving || {}).accountName,
+        accountNumber: body.giving.accountNumber !== undefined ? String(body.giving.accountNumber).trim() : (prev.giving || {}).accountNumber,
+        note: body.giving.note !== undefined ? String(body.giving.note).trim() : (prev.giving || {}).note
+      } : {})
+    }
+  };
+
+  cat.church = church;
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, church, github: gh });
+});
+
+/* =========================================================
+   CHANNEL MANAGEMENT — rename, delete, reorder
+   ========================================================= */
+
+// Rename a channel and/or change its icon
+app.put('/api/admin/channels/:id', requireAdmin, async (req, res) => {
+  const cat = readCatalog();
+  const ch = (cat.channels || []).find(c => c.id === req.params.id);
+  if (!ch) return res.status(404).json({ ok: false, error: 'Channel not found' });
+  if (ch.id === 'ch-all') return res.status(400).json({ ok: false, error: '"All Videos" is a built-in channel and cannot be renamed' });
+
+  const body = req.body || {};
+  const newName = body.name !== undefined ? String(body.name).trim() : ch.name;
+  if (!newName) return res.status(400).json({ ok: false, error: 'Channel name cannot be empty' });
+  const dupe = cat.channels.some(c => c.id !== ch.id && c.name.toLowerCase() === newName.toLowerCase());
+  if (dupe) return res.status(409).json({ ok: false, error: 'Another channel already has that name' });
+
+  ch.name = newName;
+  if (body.icon !== undefined) ch.icon = String(body.icon).trim() || ch.icon;
+  // keep the video "category" label in sync when it mirrors the old channel name
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, channel: ch, github: gh });
+});
+
+// Delete a channel. Videos in it are moved to a target channel (default: ch-archive, fallback: first remaining channel)
+app.delete('/api/admin/channels/:id', requireAdmin, async (req, res) => {
+  const cat = readCatalog();
+  const idx = (cat.channels || []).findIndex(c => c.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ ok: false, error: 'Channel not found' });
+  const ch = cat.channels[idx];
+  if (ch.id === 'ch-all') return res.status(400).json({ ok: false, error: '"All Videos" is a built-in channel and cannot be deleted' });
+
+  const moveTo = String(req.query.moveTo || req.body?.moveTo || '').trim();
+  const videosInChannel = (cat.videos || []).filter(v => v.channel === ch.id);
+
+  if (videosInChannel.length > 0) {
+    let target = cat.channels.find(c => c.id === moveTo && c.id !== ch.id);
+    if (!target) target = cat.channels.find(c => c.id === 'ch-archive' && c.id !== ch.id);
+    if (!target) target = cat.channels.find(c => c.id !== ch.id && c.id !== 'ch-all');
+    if (!target) return res.status(400).json({ ok: false, error: 'Cannot delete the only remaining channel while it still has videos' });
+    for (const v of videosInChannel) v.channel = target.id;
+  }
+
+  cat.channels.splice(idx, 1);
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, removed: ch, movedVideos: videosInChannel.length, github: gh });
+});
+
+// Reorder channels — body: { order: ["ch-all", "ch-services", ...] } (full list of channel ids in desired order)
+app.put('/api/admin/channels-order', requireAdmin, async (req, res) => {
+  const body = req.body || {};
+  const order = Array.isArray(body.order) ? body.order.map(String) : null;
+  if (!order || !order.length) return res.status(400).json({ ok: false, error: 'Missing order array' });
+
+  const cat = readCatalog();
+  const byId = new Map(cat.channels.map(c => [c.id, c]));
+  const missing = order.filter(id => !byId.has(id));
+  if (missing.length) return res.status(400).json({ ok: false, error: 'Unknown channel id(s): ' + missing.join(', ') });
+
+  const reordered = order.map(id => byId.get(id));
+  // append any channel not mentioned (defensive — keeps data safe if the client sent a partial list)
+  for (const c of cat.channels) if (!order.includes(c.id)) reordered.push(c);
+
+  cat.channels = reordered;
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, channels: cat.channels, github: gh });
+});
+
 function nextVideoId(cat) {
   let max = 0;
   for (const v of cat.videos) {
@@ -217,6 +343,89 @@ app.delete('/api/admin/videos/:id', requireAdmin, async (req, res) => {
   writeCatalog(cat);
   const gh = await syncCatalogToGitHub();
   res.json({ ok: true, removed, github: gh });
+});
+
+/* =========================================================
+   EDIT a video — title, channel, category, duration, desc,
+   tags, and thumbnail override (paste an image URL)
+   ========================================================= */
+app.put('/api/admin/videos/:id', requireAdmin, async (req, res) => {
+  const cat = readCatalog();
+  const video = (cat.videos || []).find(v => v.id === req.params.id);
+  if (!video) return res.status(404).json({ ok: false, error: 'Video not found' });
+
+  const body = req.body || {};
+
+  if (body.channel !== undefined && body.channel !== '') {
+    const chObj = cat.channels.find(c => c.id === body.channel);
+    if (!chObj) return res.status(400).json({ ok: false, error: 'Unknown channel' });
+    video.channel = chObj.id;
+    // keep category text in step with the new channel unless caller also set category explicitly
+    if (body.category === undefined) video.category = chObj.name;
+  }
+  if (body.title !== undefined) video.title = String(body.title).trim() || video.title;
+  if (body.category !== undefined) video.category = String(body.category).trim() || video.category;
+  if (body.duration !== undefined) video.duration = String(body.duration).trim() || video.duration;
+  if (body.desc !== undefined) video.desc = String(body.desc).trim();
+  if (body.tags !== undefined) {
+    video.tags = Array.isArray(body.tags)
+      ? body.tags.map(String)
+      : String(body.tags || '').split(',').map(s => s.trim()).filter(Boolean);
+  }
+
+  // Thumbnail override — paste any direct image URL (jpg/png/webp). Empty string resets to the YouTube auto-thumb.
+  if (body.thumb !== undefined) {
+    const t = String(body.thumb).trim();
+    if (t) {
+      if (!/^https?:\/\/.+\.(jpe?g|png|webp|gif)(\?.*)?$/i.test(t) && !/^https:\/\/i\.ytimg\.com\//i.test(t)) {
+        return res.status(400).json({ ok: false, error: 'Thumbnail must be a direct image URL (.jpg, .png, .webp, .gif)' });
+      }
+      video.thumb = t;
+    } else {
+      const m = (video.source || '').match(/v=([\w-]{11})/);
+      video.thumb = m ? `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg` : video.thumb;
+    }
+  }
+
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, video, github: gh });
+});
+
+/* =========================================================
+   FEATURE / PIN a video to the top of its channel + reorder
+   ========================================================= */
+
+// Toggle "featured" (pinned) flag
+app.post('/api/admin/videos/:id/feature', requireAdmin, async (req, res) => {
+  const cat = readCatalog();
+  const video = (cat.videos || []).find(v => v.id === req.params.id);
+  if (!video) return res.status(404).json({ ok: false, error: 'Video not found' });
+  const body = req.body || {};
+  video.featured = body.featured !== undefined ? !!body.featured : !video.featured;
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, video, github: gh });
+});
+
+// Reorder videos — body: { order: ["v12", "v3", ...] } (full list of video ids in desired display order)
+app.put('/api/admin/videos-order', requireAdmin, async (req, res) => {
+  const body = req.body || {};
+  const order = Array.isArray(body.order) ? body.order.map(String) : null;
+  if (!order || !order.length) return res.status(400).json({ ok: false, error: 'Missing order array' });
+
+  const cat = readCatalog();
+  const byId = new Map(cat.videos.map(v => [v.id, v]));
+  const missing = order.filter(id => !byId.has(id));
+  if (missing.length) return res.status(400).json({ ok: false, error: 'Unknown video id(s): ' + missing.join(', ') });
+
+  const reordered = order.map(id => byId.get(id));
+  for (const v of cat.videos) if (!order.includes(v.id)) reordered.push(v); // keep anything not mentioned, defensively
+
+  cat.videos = reordered;
+  writeCatalog(cat);
+  const gh = await syncCatalogToGitHub();
+  res.json({ ok: true, videos: cat.videos, github: gh });
 });
 
 /* ---- Live stream: set/clear the YouTube live URL for services ---- */
