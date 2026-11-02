@@ -90,14 +90,16 @@
         <button class="btn-admin-primary" type="submit" id="btnAdd">&#10133; Add Video to DWIM TV</button>
       </form>
 
-      <h2 style="margin-top:38px">&#128308; Live Stream Control</h2>
-      <p class="hint">Paste your YouTube live stream URL before a Sunday Service. The site shows an <b>ON AIR</b> banner and the "Watch Live" button joins the stream. Clear it after the service ends.</p>
+      <h2 style="margin-top:38px">&#128308; Go Live</h2>
+      <p class="hint">Start your stream on YouTube, paste its link here and tap <b>Go Live</b>. Every phone with DWIM TV open switches to <b>ON AIR</b> within 20 seconds. Nothing is saved to GitHub, so the site does not restart. Tap <b>End Live</b> when the service finishes (it also ends by itself after 10 hours).</p>
+      <div class="live-status" id="liveStatus">Status: checking…</div>
       <form id="liveForm" class="add-card">
         <div class="row">
-          <label class="grow">YouTube Live URL (leave empty to clear)
-            <input id="liveUrl" type="text" placeholder="https://www.youtube.com/watch?v=LIVE_ID…">
+          <label class="grow">YouTube Live URL
+            <input id="liveUrl" type="text" placeholder="https://www.youtube.com/watch?v=LIVE_ID…" autocomplete="off">
           </label>
-          <button type="submit" class="btn-admin-primary" id="btnLive">Set / Clear</button>
+          <button type="submit" class="btn-admin-primary" id="btnLive">&#128308; Go Live</button>
+          <button type="button" class="btn-admin-danger" id="btnEndLive" style="display:none">&#9632; End Live</button>
         </div>
         <div class="form-msg" id="liveMsg"></div>
       </form>

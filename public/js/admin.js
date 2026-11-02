@@ -63,6 +63,7 @@ function showDash() {
   document.getElementById('whoami').textContent = session || 'admin';
   loadCatalog();
   loadChurch();
+  loadLiveStatus();
 }
 
 /* ---------- catalog ---------- */
@@ -316,36 +317,53 @@ function broadcastChannelSupported() {
   return !!bc;
 }
 
-/* ---------- live stream control ---------- */
-async function saveLive(e) {
-  e.preventDefault();
+/* ---------- Go Live / End Live (memory-only on the server) ---------- */
+function renderLiveStatus(j) {
+  const el = document.getElementById('liveStatus');
+  const on = j && j.live && j.live.source;
+  el.className = 'live-status' + (on ? ' on' : '');
+  el.innerHTML = on
+    ? '&#128308; <b>ON AIR</b> since ' + new Date(j.startedAt).toLocaleTimeString() + ' &middot; ' + j.live.source
+    : '&#9898; Not live';
+  document.getElementById('btnEndLive').style.display = on ? '' : 'none';
+  document.getElementById('btnLive').innerHTML = on ? '&#128260; Change Stream' : '&#128308; Go Live';
+}
+async function loadLiveStatus() {
+  try { renderLiveStatus(await (await fetch('/api/admin/live')).json()); } catch (e) { /* ignore */ }
+}
+async function setLive(url) {
   const msgEl = document.getElementById('liveMsg');
   const btn = document.getElementById('btnLive');
   btn.disabled = true;
-  btn.textContent = 'Saving…';
   try {
     const r = await fetch('/api/admin/live', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: document.getElementById('liveUrl').value.trim() })
+      body: JSON.stringify({ url })
     });
     const j = await r.json();
     if (j.ok) {
-      const on = j.live && j.live.source;
-      let extra = j.github && j.github.ok ? ' · Synced to GitHub ✓' : '';
-      msg(msgEl, on ? 'Live stream set — the site is ON AIR!' + extra : 'Live stream cleared.' + extra, true);
+      renderLiveStatus(j);
+      msg(msgEl, url ? 'You are LIVE. Phones switch to ON AIR within 20 seconds.' : 'Live ended.', true);
       document.getElementById('liveUrl').value = '';
-      refreshPublicCatalog();
     } else {
-      msg(msgEl, j.error || 'Failed to set live stream', false);
+      msg(msgEl, j.error || 'Failed to update live stream', false);
     }
   } catch (err) {
     msg(msgEl, 'Failed: ' + err.message, false);
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Set / Clear';
   }
 }
+function saveLive(e) {
+  e.preventDefault();
+  const url = document.getElementById('liveUrl').value.trim();
+  if (!url) return msg(document.getElementById('liveMsg'), 'Paste the YouTube live link first.', false);
+  setLive(url);
+}
+document.getElementById('btnEndLive').addEventListener('click', () => {
+  if (confirm('End the live broadcast on DWIM TV?')) setLive('');
+});
 
 /* ============================================================
    CHANNEL MANAGEMENT — rename, delete, reorder
@@ -533,6 +551,7 @@ document.getElementById('loginForm').addEventListener('submit', login);
 document.getElementById('addForm').addEventListener('submit', addVideo);
 document.getElementById('btnVerify').addEventListener('click', verify);
 document.getElementById('liveForm').addEventListener('submit', saveLive);
+loadLiveStatus();
 document.getElementById('editForm').addEventListener('submit', saveEdit);
 document.getElementById('churchForm').addEventListener('submit', saveChurch);
 document.getElementById('btnAddService').addEventListener('click', () => { SERVICES.push({ name: '', time: '' }); renderServices(); });
