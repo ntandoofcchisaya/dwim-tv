@@ -26,19 +26,40 @@ function readCatalog() {
   }
 }
 
+/* ---- Live state: held in memory (and a temp file), NEVER committed to GitHub.
+        Going live must not trigger a Render redeploy mid-service. ---- */
+const LIVE_FILE = path.join(require('os').tmpdir(), 'dwim-live.json');
+const LIVE_MAX_MS = 10 * 3600 * 1000; // auto-end after 10h in case nobody taps End Live
+let liveNow = null;
+try {
+  const saved = JSON.parse(fs.readFileSync(LIVE_FILE, 'utf8'));
+  if (saved && saved.source && Date.now() - saved.startedAt < LIVE_MAX_MS) liveNow = saved;
+} catch (e) { /* none saved */ }
+
+function getLive() {
+  if (liveNow && Date.now() - liveNow.startedAt >= LIVE_MAX_MS) { liveNow = null; persistLive(); }
+  return liveNow
+    ? { title: liveNow.title, type: 'youtube', source: liveNow.source }
+    : { title: 'DWIM TV Live — Sunday Service', type: 'youtube', source: '' };
+}
+function persistLive() {
+  try { liveNow ? fs.writeFileSync(LIVE_FILE, JSON.stringify(liveNow)) : fs.rmSync(LIVE_FILE, { force: true }); } catch (e) { /* ignore */ }
+}
+
 function writeCatalog(cat) {
   fs.writeFileSync(CATALOG_PATH, JSON.stringify(cat, null, 2) + '\n', 'utf8');
 }
 
 // Full catalog (channels + videos)
 app.get('/api/catalog', (req, res) => {
-  res.json(readCatalog());
+  res.set('Cache-Control', 'no-store');
+  res.json({ ...readCatalog(), live: getLive() });
 });
 
 // Live status only (polled by the site; never cached)
 app.get('/api/live', (req, res) => {
   res.set('Cache-Control', 'no-store');
-  res.json({ live: readCatalog().live || null, serverTime: Date.now() });
+  res.json({ live: getLive(), serverTime: Date.now() });
 });
 
 // Weekly recurring calendar event for the Sunday service (11:00 AM CAT = 09:00 UTC)
@@ -463,25 +484,27 @@ app.put('/api/admin/videos-order', requireAdmin, async (req, res) => {
   res.json({ ok: true, videos: cat.videos, github: gh });
 });
 
-/* ---- Live stream: set/clear the YouTube live URL for services ---- */
-app.post('/api/admin/live', requireAdmin, async (req, res) => {
+/* ---- Live stream: Go Live / End Live (memory only, instant for every phone) ---- */
+app.get('/api/admin/live', requireAdmin, (req, res) => {
+  res.json({ ok: true, live: getLive(), startedAt: liveNow ? liveNow.startedAt : null });
+});
+
+app.post('/api/admin/live', requireAdmin, (req, res) => {
   const url = String((req.body || {}).url || '').trim();
-  const cat = readCatalog();
   if (!url) {
-    cat.live = { title: 'DWIM TV Live — Sunday Service', type: 'youtube', source: '' };
+    liveNow = null; // End Live
   } else {
-    const m = url.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([\w-]{11})/);
+    const m = url.match(/(?:youtu\.be\/|v=|\/embed\/|\/live\/|\/shorts\/)([\w-]{11})/);
     const id = /^[\w-]{11}$/.test(url) ? url : (m ? m[1] : null);
     if (!id) return res.status(400).json({ ok: false, error: 'Please paste a valid YouTube live URL or 11-character ID' });
-    cat.live = {
-      title: String((req.body || {}).title || 'DWIM TV Live — Sunday Service'),
-      type: 'youtube',
-      source: 'https://www.youtube.com/watch?v=' + id
+    liveNow = {
+      title: String((req.body || {}).title || 'DWIM TV Live — Sunday Service').slice(0, 120),
+      source: 'https://www.youtube.com/watch?v=' + id,
+      startedAt: Date.now()
     };
   }
-  writeCatalog(cat);
-  const gh = await syncCatalogToGitHub();
-  res.json({ ok: true, live: cat.live, github: gh });
+  persistLive();
+  res.json({ ok: true, live: getLive(), startedAt: liveNow ? liveNow.startedAt : null });
 });
 
 /* ---- GitHub sync: commits data/videos.json so changes survive
