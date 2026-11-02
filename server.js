@@ -35,6 +35,41 @@ app.get('/api/catalog', (req, res) => {
   res.json(readCatalog());
 });
 
+// Live status only (polled by the site; never cached)
+app.get('/api/live', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ live: readCatalog().live || null, serverTime: Date.now() });
+});
+
+// Weekly recurring calendar event for the Sunday service (11:00 AM CAT = 09:00 UTC)
+app.get('/service.ics', (req, res) => {
+  const cat = readCatalog();
+  const church = cat.church || {};
+  const hours = Number(church.serviceDurationHours) || 3;
+  const now = new Date();
+  const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - now.getUTCDay(), 9, 0, 0));
+  const fmt = (dt) => dt.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const end = new Date(d.getTime() + hours * 3600 * 1000);
+  const host = `${req.protocol}://${req.get('host')}`;
+  const ics = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//DWIM TV//Sunday Service//EN', 'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:sunday-service@${req.get('host')}`,
+    `DTSTAMP:${fmt(now)}`,
+    `DTSTART:${fmt(d)}`, `DTEND:${fmt(end)}`,
+    'RRULE:FREQ=WEEKLY;BYDAY=SU',
+    `SUMMARY:DWIM Sunday Service (LIVE on DWIM TV)`,
+    `DESCRIPTION:Join Destiny Word International Ministries live. Watch at ${host}`,
+    `LOCATION:${(church.location || 'Old Ascot\\, Gweru\\, Zimbabwe').replace(/,/g, '\\,')}`,
+    `URL:${host}`,
+    'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:DWIM Sunday Service starts in 30 minutes', 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'
+  ].join('\r\n') + '\r\n';
+  res.set('Content-Type', 'text/calendar; charset=utf-8');
+  res.set('Content-Disposition', 'attachment; filename="dwim-sunday-service.ics"');
+  res.send(ics);
+});
+
 // Just the videos
 app.get('/api/videos', (req, res) => {
   res.json(readCatalog().videos || []);

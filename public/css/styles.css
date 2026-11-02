@@ -1056,3 +1056,49 @@ img { max-width: 100%; }
 
   .footer-grid { grid-template-columns: 1fr; gap: 22px; }
 }
+
+/* ===== Live experience ===== */
+.live-dot.is-live .word { color: #ff4d5e; }
+.live-now {
+  margin-top: 26px; display: inline-block; max-width: 560px; padding: 22px 26px;
+  background: rgba(7, 11, 24, 0.72); border: 1px solid rgba(255, 77, 94, 0.55);
+  border-radius: 16px; backdrop-filter: blur(8px); box-shadow: 0 0 0 0 rgba(255,77,94,.5);
+  animation: onair-glow 2.4s ease-out infinite;
+}
+@keyframes onair-glow { 0% { box-shadow: 0 0 0 0 rgba(255,77,94,.45); } 100% { box-shadow: 0 0 0 22px rgba(255,77,94,0); } }
+.ln-tag { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: 2px; font-size: 12px; color: #fff; background: #e0243a; padding: 5px 12px; border-radius: 999px; }
+.ln-tag .pulse { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: pulse-anim 1.2s infinite; }
+@keyframes pulse-anim { 50% { opacity: .25; } }
+.ln-title { font-size: 24px; font-weight: 800; margin: 12px 0 6px; color: var(--gold-2); }
+.ln-sub { color: var(--text-dim); margin-bottom: 16px; line-height: 1.5; }
+.cd-local { margin-top: 6px; font-size: 13px; color: var(--text-dim); }
+.cd-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.cd-btn, .la-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--border); background: rgba(255,255,255,.06); color: var(--text);
+  font: inherit; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer;
+  transition: transform .15s, background .15s, border-color .15s;
+}
+.cd-btn:hover, .la-btn:hover { transform: translateY(-2px); background: rgba(212,175,55,.16); border-color: var(--gold); }
+
+/* live theatre (player + chat) */
+.player-main { display: block; }
+.player-box.is-live-theatre { max-width: min(1400px, 96vw); width: 96vw; }
+.is-live-theatre .player-main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; background: #000; }
+.live-chat { display: flex; flex-direction: column; background: var(--bg-2); border-left: 1px solid var(--border-soft); min-height: 0; }
+.live-chat-head { padding: 10px 14px; font-weight: 800; font-size: 13px; letter-spacing: 1px; color: var(--gold); border-bottom: 1px solid var(--border-soft); }
+.live-chat-body { position: relative; flex: 1; min-height: 0; }
+.live-chat-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #fff; }
+.live-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 22px 0; }
+@media (max-width: 900px) {
+  .is-live-theatre .player-main { grid-template-columns: 1fr; }
+  .live-chat { border-left: 0; border-top: 1px solid var(--border-soft); height: 340px; }
+}
+
+/* toast */
+.toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 120px); z-index: 300;
+  background: #e0243a; color: #fff; font-weight: 800; padding: 14px 24px; border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5); cursor: pointer; opacity: 0; transition: transform .35s, opacity .35s; max-width: 92vw; text-align: center;
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }

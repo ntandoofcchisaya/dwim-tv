@@ -8,6 +8,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="img/logo-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta name="theme-color" content="#070b18">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DWIM TV — Live Sunday Services & Sermons">
+  <meta property="og:description" content="Join Destiny Word International Ministries live every Sunday at 11:00 AM CAT. Distance is not a barrier!">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -49,8 +54,15 @@
         <a class="btn-ghost-hero" href="#watch">Browse Sermons</a>
       </div>
 
+      <div class="live-now" id="liveNow" style="display:none">
+        <div class="ln-tag"><span class="pulse"></span> ON AIR NOW</div>
+        <div class="ln-title" id="liveNowTitle">DWIM TV Live</div>
+        <p class="ln-sub" id="liveNowSub">The service is live. Join the DWIM family from wherever you are.</p>
+        <button class="btn-play-hero" id="liveNowBtn" onclick="watchLive()">&#9654; Join the Service</button>
+      </div>
+
       <div class="countdown" id="countdown">
-        <div class="cd-label">Next Sunday Service begins in</div>
+        <div class="cd-label" id="cdLabel">Next Sunday Service begins in</div>
         <div class="cd-grid">
           <div class="cd-cell"><span id="cdD">–</span><small>Days</small></div>
           <div class="cd-cell"><span id="cdH">–</span><small>Hours</small></div>
@@ -58,12 +70,17 @@
           <div class="cd-cell"><span id="cdS">–</span><small>Seconds</small></div>
         </div>
         <div class="cd-when">Sundays · 11:00 AM (CAT) · Old Ascot, Gweru</div>
+        <div class="cd-local" id="cdLocal"></div>
+        <div class="cd-tools">
+          <a class="cd-btn" href="/service.ics" download="dwim-sunday-service.ics">&#128197; Add to Calendar</a>
+          <a class="cd-btn" id="shareWa" href="#" target="_blank" rel="noopener">&#128172; Invite on WhatsApp</a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ===== Live Banner (when stream set) ===== -->
-  <div class="live-banner" id="liveBanner" style="display:none">
+  <div class="live-banner" id="liveBanner" style="display:none" role="status" aria-live="polite">
     <span class="live-tag"><span class="pulse"></span> ON AIR NOW</span>
     <span id="liveTitle" class="live-banner-title">DWIM TV Live</span>
     <button class="btn-play" onclick="watchLive()">&#9654; Join the Service</button>
@@ -177,12 +194,23 @@
 
   <!-- ===== Player Modal ===== -->
   <div class="player-modal" id="playerModal">
-    <div class="player-box">
+    <div class="player-box" id="playerBox">
       <div class="player-head">
         <h3 id="playerTitle">Now Playing</h3>
         <button class="btn-close" onclick="closePlayer()">&#10005;</button>
       </div>
-      <div class="player-frame" id="playerFrame"></div>
+      <div class="player-main">
+        <div class="player-frame" id="playerFrame"></div>
+        <aside class="live-chat" id="liveChat" style="display:none">
+          <div class="live-chat-head">&#128172; Live Chat</div>
+          <div class="live-chat-body" id="liveChatBody"></div>
+        </aside>
+      </div>
+      <div class="live-actions" id="liveActions" style="display:none">
+        <a class="la-btn" href="#prayer" onclick="closePlayer()">&#128591; Prayer Request</a>
+        <a class="la-btn" href="#giving" onclick="closePlayer()">&#10084; Give</a>
+        <button class="la-btn" onclick="shareService()">&#8599; Share</button>
+      </div>
       <div class="player-info">
         <div class="meta-row">
           <span class="cat" id="playerCat">CATEGORY</span>

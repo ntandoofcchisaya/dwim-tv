@@ -111,14 +111,9 @@ function applyChurchConfig() {
     document.title = `DWIM TV — ${ch.name || 'Destiny Word International Ministries'}`;
   }
 
-  // live stream banner
-  const live = CATALOG.live;
-  const banner = document.getElementById('liveBanner');
-  if (live && live.source && banner) {
-    banner.style.display = 'flex';
-    document.getElementById('liveTitle').textContent = live.title || 'DWIM TV Live';
-    document.getElementById('liveDot').querySelector('.word').textContent = 'ON AIR';
-  }
+  applyLiveUI();
+  const wa = document.getElementById('shareWa');
+  if (wa) wa.href = 'https://wa.me/?text=' + encodeURIComponent('Join Destiny Word International Ministries LIVE on DWIM TV - Sundays 11:00 AM (CAT). ' + location.origin);
 }
 
 /* Live refresh (admin tab changes -> update this tab) */
@@ -255,9 +250,9 @@ function watchLive() {
   const live = CATALOG.live;
   if (live && live.source) {
     openPlayer(live.title || 'DWIM TV Live', live.type || 'youtube', live.source,
-      'LIVE', 'Join the DWIM family live — distance is not a barrier. May the Lord bless you as you join us in worship, the Word and prayer.');
+      'ON AIR', 'Join the DWIM family live — distance is not a barrier. May the Lord bless you as you join us in worship, the Word and prayer.', 'LIVE', true);
   } else {
-    // no stream configured yet -> guide the viewer to the next service + latest message
+    // no stream yet -> if a service is under way tell the viewer, else guide the viewer to the next service + latest message
     const latest = (CATALOG.videos || [])[0];
     const target = document.getElementById('hero');
     if (target) target.scrollIntoView({ behavior: 'smooth' });
@@ -272,7 +267,7 @@ function playVideo(id) {
   openPlayer(v.title || 'Now Playing', v.type, v.source, v.duration || '—', v.desc || '', v.category);
 }
 
-function openPlayer(title, type, source, duration, desc, category) {
+function openPlayer(title, type, source, duration, desc, category, isLive) {
   document.getElementById('playerTitle').textContent = title;
   document.getElementById('playerCat').textContent = category || 'DWIM TV';
   document.getElementById('playerDur').textContent = duration || '—';
@@ -284,6 +279,20 @@ function openPlayer(title, type, source, duration, desc, category) {
   else if (type === 'direct') frame.innerHTML = directSrc(fake);
   else frame.innerHTML = embedSrc(fake);
 
+  // live theatre: YouTube live chat beside the player + prayer / give / share actions
+  const box = document.getElementById('playerBox');
+  const chat = document.getElementById('liveChat');
+  const actions = document.getElementById('liveActions');
+  const vid = type === 'youtube' ? ytId(source) : null;
+  if (isLive && vid) {
+    document.getElementById('liveChatBody').innerHTML =
+      `<iframe src="https://www.youtube.com/live_chat?v=${vid}&embed_domain=${encodeURIComponent(location.hostname)}" title="Live chat"></iframe>`;
+    chat.style.display = ''; actions.style.display = ''; box.classList.add('is-live-theatre');
+  } else {
+    document.getElementById('liveChatBody').innerHTML = '';
+    chat.style.display = 'none'; actions.style.display = 'none'; box.classList.remove('is-live-theatre');
+  }
+
   document.getElementById('playerModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -291,6 +300,7 @@ function openPlayer(title, type, source, duration, desc, category) {
 function closePlayer() {
   document.getElementById('playerModal').classList.remove('open');
   document.getElementById('playerFrame').innerHTML = '';
+  document.getElementById('liveChatBody').innerHTML = '';
   document.body.style.overflow = '';
 }
 
@@ -302,41 +312,139 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closePlayer();
 });
 
-/* ---------- Countdown to next Sunday 11:00 AM CAT (UTC+2) ---------- */
-function nextSundayService() {
-  // CAT is UTC+2, no DST
-  const now = new Date();
-  // current time in CAT
-  const nowCat = new Date(now.getTime() + (2 * 60 + now.getTimezoneOffset()) * 60000);
-  const target = new Date(nowCat);
-  target.setHours(11, 0, 0, 0);
-  let day = target.getDay(); // 0 = Sunday
-  if (day === 0 && nowCat.getHours() >= 11) {
-    // Sunday after service start -> next Sunday
-    target.setDate(target.getDate() + 7);
-  } else if (day !== 0) {
-    target.setDate(target.getDate() + (7 - day)); // days until Sunday
-  }
-  return target;
+/* ---------- Service schedule (Sundays 11:00 AM CAT = UTC+2, no DST) ---------- */
+const CAT_OFFSET_MS = 2 * 3600 * 1000;
+const WEEK_MS = 7 * 86400 * 1000;
+
+function serviceSchedule(nowMs = Date.now()) {
+  const hours = Number((CATALOG.church || {}).serviceDurationHours) || 3;
+  const cat = new Date(nowMs + CAT_OFFSET_MS);
+  // 11:00 CAT on the most recent Sunday (today if it is Sunday), expressed in real UTC ms
+  const lastStart = Date.UTC(cat.getUTCFullYear(), cat.getUTCMonth(), cat.getUTCDate() - cat.getUTCDay(), 11, 0, 0) - CAT_OFFSET_MS;
+  const inWindow = nowMs >= lastStart && nowMs < lastStart + hours * 3600 * 1000;
+  const nextStart = nowMs < lastStart ? lastStart : lastStart + WEEK_MS;
+  return { inWindow, nextStart, windowStart: lastStart };
+}
+
+/* Is the stream "on air"? Admin sets a live URL; during the service window we also show a "starting" state */
+function liveState() {
+  const hasSource = !!(CATALOG.live && CATALOG.live.source);
+  const { inWindow } = serviceSchedule();
+  if (hasSource) return 'live';
+  if (inWindow) return 'starting';
+  return 'upcoming';
 }
 
 function tickCountdown() {
   const d = document.getElementById('cdD');
   if (!d) return;
-  const now = new Date();
-  const nowCat = new Date(now.getTime() + (2 * 60 + now.getTimezoneOffset()) * 60000);
-  const target = nextSundayService();
-  let ms = target - nowCat;
-  if (ms < 0) ms = 0;
-  const sec = Math.floor(ms / 1000);
-  const days = Math.floor(sec / 86400);
-  const hours = Math.floor((sec % 86400) / 3600);
-  const mins = Math.floor((sec % 3600) / 60);
-  const secs = sec % 60;
-  d.textContent = String(days).padStart(2, '0');
-  document.getElementById('cdH').textContent = String(hours).padStart(2, '0');
-  document.getElementById('cdM').textContent = String(mins).padStart(2, '0');
-  document.getElementById('cdS').textContent = String(secs).padStart(2, '0');
+  const { nextStart } = serviceSchedule();
+  const sec = Math.max(0, Math.floor((nextStart - Date.now()) / 1000));
+  d.textContent = String(Math.floor(sec / 86400)).padStart(2, '0');
+  document.getElementById('cdH').textContent = String(Math.floor((sec % 86400) / 3600)).padStart(2, '0');
+  document.getElementById('cdM').textContent = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+  document.getElementById('cdS').textContent = String(sec % 60).padStart(2, '0');
+
+  const local = document.getElementById('cdLocal');
+  if (local && !local.dataset.set) {
+    try {
+      const t = new Date(nextStart).toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+      local.textContent = `That is ${t} in your time zone`;
+      local.dataset.set = '1';
+    } catch (e) { /* ignore */ }
+  }
+  // flip UI the second a service window opens/closes
+  const st = liveState();
+  if (st !== lastLiveState) applyLiveUI();
+}
+
+/* ---------- Live status UI (hero, banner, tab title) ---------- */
+let lastLiveState = null;
+let wasLive = false;
+const LIVE_PREFIX = /^\u{1F534} LIVE \u2014 /u;
+
+function applyLiveUI() {
+  const st = liveState();
+  lastLiveState = st;
+  const live = CATALOG.live || {};
+  const cd = document.getElementById('countdown');
+  const ln = document.getElementById('liveNow');
+  const banner = document.getElementById('liveBanner');
+  const dot = document.getElementById('liveDot');
+  const word = dot && dot.querySelector('.word');
+
+  if (st === 'live') {
+    if (cd) cd.style.display = 'none';
+    if (ln) ln.style.display = '';
+    document.getElementById('liveNowTitle').textContent = live.title || 'DWIM TV Live';
+    document.getElementById('liveNowBtn').innerHTML = '&#9654; Join the Service';
+    document.getElementById('liveNowSub').textContent = 'The service is live right now. Join the DWIM family from wherever you are.';
+    if (banner) { banner.style.display = 'flex'; document.getElementById('liveTitle').textContent = live.title || 'DWIM TV Live'; }
+    if (word) word.textContent = 'ON AIR';
+    if (dot) dot.classList.add('is-live');
+    document.title = '\u{1F534} LIVE \u2014 ' + document.title.replace(LIVE_PREFIX, '');
+  } else if (st === 'starting') {
+    if (cd) cd.style.display = 'none';
+    if (ln) ln.style.display = '';
+    document.getElementById('liveNowTitle').textContent = 'Service is starting';
+    document.getElementById('liveNowBtn').innerHTML = '&#9654; Watch the Latest Message';
+    document.getElementById('liveNowSub').textContent = 'Our Sunday service is under way. The live stream will appear here the moment it goes on air. This page updates by itself, so no need to refresh.';
+    if (banner) banner.style.display = 'none';
+    if (word) word.textContent = 'STARTING';
+    if (dot) dot.classList.remove('is-live');
+    document.title = document.title.replace(LIVE_PREFIX, '');
+  } else {
+    if (cd) cd.style.display = '';
+    if (ln) ln.style.display = 'none';
+    if (banner) banner.style.display = 'none';
+    if (word) word.textContent = 'LIVE SUNDAYS';
+    if (dot) dot.classList.remove('is-live');
+    document.title = document.title.replace(LIVE_PREFIX, '');
+  }
+  // the old "Watch Live" label on the nav button
+  const navBtn = document.querySelector('.btn-live-sm');
+  if (navBtn) navBtn.innerHTML = st === 'live' ? '&#9679; Watch Live Now' : '&#9654; Watch Live';
+
+  if (st === 'live' && !wasLive) showToast('\u{1F534} We are LIVE! Tap to join the service.', watchLive);
+  wasLive = st === 'live';
+}
+
+function showToast(msg, onClick) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.onclick = () => { t.classList.remove('show'); if (onClick) onClick(); };
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('show'), 12000);
+}
+
+/* Poll the live status so viewers see ON AIR without refreshing */
+async function pollLive() {
+  try {
+    const res = await fetch('/api/live', { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const before = JSON.stringify(CATALOG.live || {});
+    CATALOG.live = data.live || null;
+    if (JSON.stringify(CATALOG.live || {}) !== before) applyLiveUI();
+  } catch (e) { /* offline - ignore */ }
+}
+function schedulePolling() {
+  // every 20s during a service window, every 2 minutes otherwise; paused while tab is hidden
+  setTimeout(async () => {
+    if (!document.hidden) await pollLive();
+    schedulePolling();
+  }, serviceSchedule().inWindow ? 20000 : 120000);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) pollLive(); });
+
+/* ---------- Share ---------- */
+function shareService() {
+  const url = location.origin;
+  const text = 'Join Destiny Word International Ministries LIVE on DWIM TV - Sundays 11:00 AM (CAT). Distance is not a barrier!';
+  if (navigator.share) navigator.share({ title: 'DWIM TV', text, url }).catch(() => {});
+  else window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
 }
 
 /* ---------- Contact buttons (prayer / giving / testimony) ---------- */
@@ -378,4 +486,4 @@ function initContactButtons() {
 document.getElementById('year').textContent = new Date().getFullYear();
 tickCountdown();
 setInterval(tickCountdown, 1000);
-loadCatalog().then(initContactButtons);
+loadCatalog().then(() => { initContactButtons(); schedulePolling(); });
